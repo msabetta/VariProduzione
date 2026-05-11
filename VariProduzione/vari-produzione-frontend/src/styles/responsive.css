@@ -1,0 +1,151 @@
+@media (min-width: 768px) {
+    /* Disabilitazione effetti speciali per desktop*/
+    .shake-mobile {
+        animation: none !important;
+    }
+    .spin-mobile {
+        animation: none !important;
+    }
+    .slide-down-mobile {
+        animation: none !important;
+    }
+    .slide-up-mobile {
+        animation: none !important;
+    }
+    .slide-left-mobile {
+        animation: none !important;
+    }
+    .slide-right-mobile {
+        animation: none !important;
+    }
+    .fade-in-mobile {
+        animation: none !important;
+    }
+    .fade-out-mobile {
+        animation: none !important;
+    }
+    .pop-in-mobile {
+        animation: none !important;
+    }
+    .pop-out-mobile {
+        animation: none !important;
+    }
+    .zoom-in-mobile {
+        animation: none !important;
+    }
+    .zoom-out-mobile {
+        animation: none !important;
+    }
+    .bounce-mobile {
+        animation: none !important;
+    }
+    .shake-mobile {
+        animation: none !important;
+    }   
+    .color-pulse-mobile {
+        animation: none !important;
+    }
+    .color-slide-mobile {
+        animation: none !important;
+    }
+    .color-slide-back-mobile {
+        animation: none !important;
+    }
+    .color-pop-mobile {
+        animation: none !important;
+    }
+    .color-pop-back-mobile {
+        animation: none !important;
+    }
+    .rotate-mobile {
+        animation: none !important;
+    }
+    .rotate-back-mobile {
+        animation: none !important;
+    }
+    .rotate-half-mobile {
+        animation: none !important;
+    }
+    .rotate-half-back-mobile {
+        animation: none !important;
+    }
+    .gradient-slide-mobile {
+        animation: none !important;
+    }
+    .gradient-slide-back-mobile {
+        animation: none !important;
+    }
+    .pulse-red-mobile {
+        animation: none !important;
+    }
+    .pulse-green-mobile {
+        animation: none !important;
+    }
+    .pulse-blue-mobile {
+        animation: none !important;
+    }
+    .pulse-yellow-mobile {
+        animation: none !important;
+    }
+    .pulse-magenta-mobile {
+        animation: none !important;
+    }
+    .pulse-cyan-mobile {
+        animation: none !important;
+    }
+    .rainbow-pulse-mobile {
+        animation: none !important;
+    }
+}
+
+
+@media (max-width: 1440px) {
+    .container {
+        max-width: 1440px;
+    }
+}
+
+/* Mobile First Approach o Breakpoints standard */
+
+@media (max-width: 1024px) {
+    .container {
+        max-width: 900px;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --space-lg: 1rem;
+        --space-xl: 1.5rem;
+    }
+
+    .flex-mobile-column {
+        flex-direction: column;
+    }
+
+    .hide-mobile {
+        display: none !important;
+    }
+
+    .container {
+        max-width: 768px;
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+        .container {
+            max-width: 480px;
+        }
+    }
+}
+
+@media (min-width: 1920px) {
+    .container {
+        max-width: 1920px;
+    }
+}

@@ -1,0 +1,27 @@
+name: Deploy - Production
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  docker-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        
+      - name: Build and Push API
+        run: |
+          echo "Simulazione build Docker per API..."
+          # docker build -t myuser/vari-produzione-api:${{ github.ref_name }} ./VariProduzioneApi
+          # docker push myuser/vari-produzione-api:${{ github.ref_name }}
+
+      - name: Build and Push Frontend
+        run: |
+          echo "Simulazione build Docker per Frontend..."
+          # docker build -t myuser/vari-produzione-frontend:${{ github.ref_name }} ./vari-produzione-frontend
+          # docker push myuser/vari-produzione-frontend:${{ github.ref_name }}

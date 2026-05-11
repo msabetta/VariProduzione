@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:10.6
+    container_name: marioware-mariodb-1
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: password
+      MARIADB_DATABASE: marioware
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ../Database:/var/lib/mysql/Database:ro # Mount per seed-data.sh
+
+  api:
+    build:
+      context: ../VariProduzioneApi
+      dockerfile: Dockerfile
+    container_name: vari-produzione-api
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=marioware;Uid=root;Pwd=password;
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build:
+      context: ../vari-produzione-frontend
+      dockerfile: Dockerfile
+    container_name: vari-produzione-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  db_data:

@@ -1,0 +1,17 @@
+.env
+node_modules
+.vscode
+.idea
+.DS_Store
+.env.development
+.env.production
+.env.local
+.env.test
+.env.prod.local
+.env.dev.local
+node_modules
+.vscode
+.idea
+.DS_Store
+.env.development
+.env.production

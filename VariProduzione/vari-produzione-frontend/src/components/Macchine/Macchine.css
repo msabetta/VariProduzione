@@ -1,0 +1,603 @@
+@import './variables.css';
+@import './animations.css';
+@media screen and (max-width: 768px) {
+    .macchine-container {
+        padding: var(--space-md);
+    }
+}
+
+/* Macchine Layout */
+
+.macchine-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+/* Macchina Detail */
+
+.macchina-detail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-form-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-form-actions button {
+    flex: 1;
+}
+
+.macchina-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-card-actions button {
+    flex: 1;
+}
+
+/* Macchina Status */
+
+.macchine-status {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchine-status-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchine-status-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchine-status-actions button {
+    flex: 1;
+}
+
+.macchine-status-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchine-status-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchine-status-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchine-status-card-actions button {
+    flex: 1;
+}
+
+/* Macchina Chart */
+
+.macchina-chart {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-chart-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-chart-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-chart-actions button {
+    flex: 1;
+}
+
+.macchina-chart-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-chart-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-chart-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-chart-card-actions button {
+    flex: 1;
+}
+
+/* Macchina Table */
+
+.macchina-table {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-table-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-table-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-table-actions button {
+    flex: 1;
+}
+
+.macchina-table-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-table-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-table-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-table-card-actions button {
+    flex: 1;
+}
+
+/* Macchina Maintenance */
+
+.macchina-maintenance {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-actions button {
+    flex: 1;
+}
+
+.macchina-maintenance-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-card-actions button {
+    flex: 1;
+}
+
+/* Macchina Maintenance Chart */
+
+.macchina-maintenance-chart {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-chart-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-chart-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-chart-actions button {
+    flex: 1;
+}
+
+.macchina-maintenance-chart-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-chart-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-chart-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-chart-card-actions button {
+    flex: 1;
+}
+
+/* Macchina Maintenance Chart */
+
+.macchina-maintenance-chart {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-chart-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-chart-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-chart-actions button {
+    flex: 1;
+}
+
+.macchina-maintenance-chart-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-chart-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-chart-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-chart-card-actions button {
+    flex: 1;
+}
+
+/* Macchina Maintenance Log */
+
+.macchina-maintenance-log {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-log-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-log-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-log-actions button {
+    flex: 1;
+}
+
+.macchina-maintenance-log-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-log-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-log-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-log-card-actions button {
+    flex: 1;
+}
+
+/* Macchina Maintenance Log */
+
+.macchina-maintenance-log {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-log-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-log-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-log-actions button {
+    flex: 1;
+}
+
+.macchina-maintenance-log-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-log-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-log-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.macchina-maintenance-log-card-actions button {
+    flex: 1;
+}

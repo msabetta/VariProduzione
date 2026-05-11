@@ -1,0 +1,385 @@
+@import './Macchine.css';
+
+.ordini-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-actions button {
+    flex: 1;
+}
+
+.ordini-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-card-actions button {
+    flex: 1;
+}
+
+/* Ordini Table */
+
+.ordini-table {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-table-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-table-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-table-actions button {
+    flex: 1;
+}
+
+.ordini-table-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-table-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-table-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-table-card-actions button {
+    flex: 1;
+}
+
+/* Ordini Chart */
+
+.ordini-chart {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-chart-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-chart-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-chart-actions button {
+    flex: 1;
+}
+
+.ordini-chart-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-chart-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-chart-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-chart-card-actions button {
+    flex: 1;
+}
+
+/* Ordini Detail */
+
+.ordini-detail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-detail-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-detail-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-detail-actions button {
+    flex: 1;
+}
+
+.ordini-detail-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-detail-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-detail-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-detail-card-actions button {
+    flex: 1;
+}
+
+/* Ordini Form */
+
+.ordini-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-form-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-form-actions button {
+    flex: 1;
+}
+
+.ordini-form-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-form-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-form-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-form-card-actions button {
+    flex: 1;
+}
+
+/* Ordini List */
+
+.ordini-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-list-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-list-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-list-actions button {
+    flex: 1;
+}
+
+.ordini-list-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-list-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-list-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    min-height: 100vh;
+    background-color: var(--bg-secondary);
+}
+
+.ordini-list-card-actions button {
+    flex: 1;
+}
+
+

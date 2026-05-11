@@ -1,0 +1,19 @@
+{
+    "recommendations": [
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "dsznajder.es7-react-js-snippets",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "tintinweb.chocolate-chip-theme",
+        "vscode-icons-team.vscode-icons",
+        "visualstudioexptteam.vscodeintellicode",
+        "ms-vscode.azure-repos",
+        "ms-vscode.powershell",
+        "ms-vscode.remote-containers",
+        "ms-vscode.remote-ssh",
+        "ms-vscode.remote-server"
+    ]
+}
+

@@ -1,0 +1,67 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "dotnet: build api",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/VariProduzione/VariProduzioneApi/VariProduzioneApi.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "dotnet: run api",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/VariProduzione/VariProduzioneApi/VariProduzioneApi.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "npm: install",
+            "command": "npm",
+            "type": "process",
+            "options": {
+                "cwd": "${workspaceFolder}/VariProduzione/vari-produzione-frontend"
+            },
+            "args": [
+                "install"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "npm: dev",
+            "command": "npm",
+            "type": "process",
+            "options": {
+                "cwd": "${workspaceFolder}/VariProduzione/vari-produzione-frontend"
+            },
+            "args": [
+                "run",
+                "dev"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "frontend: build docker",
+            "command": "docker",
+            "type": "process",
+            "args": [
+                "build",
+                "-t",
+                "vari-produzione-frontend",
+                "-f",
+                "${workspaceFolder}/VariProduzione/vari-produzione-frontend/Dockerfile",
+                "${workspaceFolder}/VariProduzione/vari-produzione-frontend"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

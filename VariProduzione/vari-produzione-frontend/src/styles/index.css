@@ -1,0 +1,39 @@
+@import './variables.css';
+@import './animations.css';
+@import './themes.css';
+@import './responsive.css';
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+    margin-bottom: var(--space-md);
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary);
+}
+
+/* Layout Utilities */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+}
+
+.flex { display: flex; }
+.grid { display: grid; }
+.gap-md { gap: var(--space-md); }

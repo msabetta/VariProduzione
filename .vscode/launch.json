@@ -1,0 +1,24 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch API (Web)",
+            "type": "node",
+            "request": "launch",
+            "preLaunchTask": "dotnet: build api",
+            "program": "${workspaceFolder}/VariProduzione/VariProduzioneApi/bin/Debug/net9.0/VariProduzioneApi.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/VariProduzione/VariProduzioneApi",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        {
+            "name": "Launch Frontend (Chrome)",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/VariProduzione/vari-produzione-frontend"
+        }
+    ]
+}

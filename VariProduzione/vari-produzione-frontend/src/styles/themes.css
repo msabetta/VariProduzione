@@ -1,0 +1,44 @@
+/* 
+   Simplificazione dei Temi: 
+   Invece di definire classi per ogni elemento, cambiamo solo le variabili CSS.
+*/
+
+.theme-standard {
+    --primary: #0012FE;
+    --secondary: #FF5E00;
+}
+
+.theme-industrial {
+    --primary: #2C3E50;
+    --secondary: #E67E22;
+    --bg-main: #ECF0F1;
+}
+
+.theme-high-contrast {
+    --primary: #000000;
+    --secondary: #FFFF00;
+    --bg-main: #FFFFFF;
+    --text-main: #000000;
+}
+
+/* Applicazione automatica alle componenti */
+.dashboard-card {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-normal);
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
