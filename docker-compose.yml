@@ -1,0 +1,15 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "[PASSWORD]"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express" # Developer, Standard, Express
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+
+volumes:
+  sqlserver-data: # è un volume persistente, mantiene i dati anche se riavvii il container.
+    name: VariProduzione-db-data
