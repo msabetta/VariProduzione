@@ -18,18 +18,18 @@ run_sql() {
 }
 
 # 1. Schema Iniziale
-run_sql "Database/InitialSchema.sql"
+run_sql "VariProduzione/Database/InitialSchema.sql"
 
 # 2. Dati di Seed
-run_sql "Database/SeedData.sql"
+run_sql "VariProduzione/Database/SeedData.sql"
 
 # 3. Viste (Visto che esistono, le aggiungiamo)
-run_sql "Database/Views/vw_MacchineStatus.sql"
-run_sql "Database/Views/vw_OrdiniInRitardo.sql"
+run_sql "VariProduzione/Database/Views/vw_MacchineStatus.sql"
+run_sql "VariProduzione/Database/Views/vw_OrdiniInRitardo.sql"
 
 # 4. Stored Procedures (Corretti i nomi dei file esistenti)
-run_sql "Database/Stored Procedures/sp_GetDashboardStats.sql"
-run_sql "Database/Stored Procedures/sp_GetOrdiniRitardo.sql"
+run_sql "VariProduzione/Database/Stored Procedures/sp_GetDashboardStats.sql"
+run_sql "VariProduzione/Database/Stored Procedures/sp_GetOrdiniRitardo.sql"
 
 # Nota: Molte delle procedure precedentemente elencate nel file originale non sembrano esistere nel filesystem.
 # Sono state rimosse per evitare errori di 'file not found'.
