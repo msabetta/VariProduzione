@@ -1,419 +1,334 @@
-# 🏭 Varese Production Tracking System
+# ⚙️ Varese Production System (VariProduzione)
 
-## Sistema di Gestione Produzione Moderno per Manifatture Varesine
+Sistema di gestione produzione industriale per monitorare ordini, macchine, operatori e task in tempo reale.
 
-Una soluzione **full-stack .NET + React** pensata appositamente per aziende manifatturiere, in particolare quelle della provincia di Varese. Dashboard accattivante, real-time, con Gantt interattivo e monitoraggio della produzione.
-
----
-
-## 🎯 Features Principali
-
-### 📊 Dashboard Intelligente
-- **KPI in real-time**: Ordini, task, efficienza globale, costi
-- **Alert critici**: Ordini in ritardo, guasti macchine, scadenze imminenti
-- **Status macchine**: Visualizzazione istantanea dello stato operativo
-- **Refresh automatico**: Aggiornamento dati ogni 30 secondi
-
-### 📅 Gantt Chart Dinamico
-- Visualizzazione timeline produzione
-- Dipendenze tra task
-- Progresso visuale
-- Colori semantici (in corso, bloccato, completato)
-- Responsive su mobile
-
-### ⚠️ Sistema di Alert Intelligente
-- 3 livelli di severità (info, warning, critical)
-- Tipi diversi: ritardi, guasti, scadenze
-- Ordinamento per priorità
-- Aggiornamento real-time
-
-### 🤖 Machine Learning Ready
-- Tracking ore stimate vs reali
-- Calcolo efficienza operatori
-- Tasso di utilizzo macchine
-- Base per predictive analytics
-
-### 🔄 API REST Strutturata
-- Minimal APIs (.NET 8)
-- Repository pattern
-- Service layer
-- Documentation con Swagger
-- CORS abilitato
+![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)
+![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-CC2927?logo=microsoft-sql-server)
+![License](https://img.shields.io/badge/license-Proprietary-blue)
 
 ---
 
-## 🛠️ Stack Tecnologico
+## 📑 Indice
+
+- [Architettura](#-architettura)
+- [Prerequisiti](#-prerequisiti)
+- [Installazione](#-installazione)
+- [Configurazione Database](#-configurazione-database)
+- [Avvio](#-avvio)
+- [API Endpoints](#-api-endpoints)
+- [Deploy](#-deploy)
+- [Struttura Progetto](#-struttura-progetto)
+- [Troubleshooting](#-troubleshooting)
+
+---
+
+## 🏗️ Architettura
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   Frontend      │────▶│   Backend API   │────▶│   SQL Server    │
+│   React + Vite  │◄────│   .NET 10       │◄────│   Database      │
+│   localhost:5173│     │   localhost:5000│     │   VariProduzione│
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+```
+
+| Componente | Tecnologia | Porta |
+|------------|-----------|-------|
+| Frontend | React 18 + Vite | 5173 (dev) / 3000 (prod) |
+| Backend | .NET 10 Minimal API | 5000 (HTTP) / 5001 (HTTPS) |
+| Database | SQL Server 2022 / LocalDB | 1433 |
+
+---
+
+## 📋 Prerequisiti
 
 ### Backend
-```
-.NET 8 Core
-Entity Framework Core 8
-SQL Server / PostgreSQL
-SignalR (per real-time futuri)
-```
+- [.NET SDK 10.0](https://dotnet.microsoft.com/download)
+- [SQL Server Express / LocalDB](https://www.microsoft.com/sql-server/sql-server-downloads) oppure Docker
 
 ### Frontend
-```
-React 18+
-Lucide Icons (moderne)
-CSS custom (no framework bloat)
-Responsive design
+- [Node.js 18+](https://nodejs.org/)
+- npm 9+
+
+### Opzionale
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- [SQL Server Management Studio (SSMS)](https://aka.ms/ssmsfullsetup)
+
+---
+
+## 🚀 Installazione
+
+### 1. Clona il repository
+
+```bash
+git clone https://github.com/msabetta/VariProduzione.git
+cd VariProduzione
 ```
 
-### Database
+### 2. Installa dipendenze Backend
+
+```bash
+cd VariProduzione/VariProduzioneApi
+dotnet restore
+dotnet build
 ```
-SQL Server (o PostgreSQL)
-Schema normalizzato
-Indici su campi critici
-Audit trail ready
+
+### 3. Installa dipendenze Frontend
+
+```bash
+cd ../vari-produzione-frontend
+npm install
 ```
 
 ---
 
-## 📦 Installazione
+## 🗄️ Configurazione Database
 
-### Prerequisites
-- **.NET 8 SDK** - [Download](https://dotnet.microsoft.com/download)
-- **Node.js 18+** - [Download](https://nodejs.org)
-- **SQL Server 2019+** o **PostgreSQL 13+**
-- **Visual Studio 2022** o **VS Code**
-
-### Setup Backend
+### Opzione A: SQL Server LocalDB (consigliato per sviluppo)
 
 ```bash
-# 1. Creare nuovo progetto .NET
-dotnet new globaljson --sdk-version 8.0.0
-mkdir VariProduzioneApi
-cd VariProduzioneApi
-
-# 2. Creare soluzioni web API
-dotnet new webapi -minimal -o .
-
-# 3. Installare NuGet packages
-dotnet add package Microsoft.EntityFrameworkCore.SqlServer
-dotnet add package Microsoft.EntityFrameworkCore.Tools
-dotnet add package Microsoft.AspNetCore.Cors
-
-# 4. Aggiungere file ProductionTrackingApi.cs nel progetto
-
-Per creare il backend .NET 8 (API Minimal + Entity Framework) completo e funzionante, partendo dalle basi, segui questi step in ordine.
-
-Ho creato la struttura completa che avevi richiesto, inclusa l'API Swagger finale e i file necessari. Inserisci questi snippet nei file corretti. Ti fornirò tutto, uno step alla volta.
-
-Prerequisiti: hai già installato .NET 8 SDK e Node.js? Se sì, passiamo alla creazione del backend.
-
-È fondamentale fare un backup completo del progetto prima di procedere. Ti consiglio di:
-
-Zippare l'intera cartella del progetto attuale (VariProduzione)
-Salvare lo ZIP in una cartella separata (es. backup/VariProduzione_backup_2026-05-12)
-Lasciare la cartella attuale intatta finché non confermi che il nuovo sistema funziona
-
-Una volta fatto il backup, dimmi quando posso mostrarti il primo step per creare il backend .NET 8 completo.
-
-Copiare il file ProductionTrackingApi.cs nel progetto
-
-# 5. Configurare connection string in appsettings.json
+# Crea istanza LocalDB
+sqllocaldb c VariProduzioneDB
+sqllocaldb s VariProduzioneDB
 ```
 
-**appsettings.json:**
+Connection string in `appsettings.json`:
 ```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=YOUR_SERVER;Database=VariProduzione;Trusted_Connection=true;TrustServerCertificate=true;"
-  },
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information"
-    }
-  },
-  "AllowedHosts": "*"
-}
+"DefaultConnection": "Server=(localdb)\\VariProduzioneDB;Database=VariProduzione;Trusted_Connection=true;TrustServerCertificate=true;Encrypt=false"
 ```
 
-**Creare migrations:**
+### Opzione B: SQL Server Express
+
 ```bash
-dotnet ef migrations add InitialCreate
-dotnet ef database update
+# Installa SQL Server Express
+choco install sql-server-express
 ```
 
-**Avviare API:**
+Connection string:
+```json
+"DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=VariProduzione;Trusted_Connection=true;TrustServerCertificate=true;Encrypt=false"
+```
+
+### Opzione C: Docker
+
 ```bash
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=YourStrong@Passw0rd" -p 1433:1433 --name sqlserver -d mcr.microsoft.com/mssql/server:2022-latest
+```
+
+---
+
+## ▶️ Avvio
+
+### Avvia Backend (terminale 1)
+
+```bash
+cd VariProduzione/VariProduzioneApi
 dotnet run
-# API sarà su https://localhost:5001
-# Swagger su https://localhost:5001/scalar
 ```
 
-### Setup Frontend
+Verifica:
+- API Root: http://localhost:5000/
+- Health Check: http://localhost:5000/health
+- Documentazione: http://localhost:5000/scalar
+- Dashboard API: http://localhost:5000/api/produzione/dashboard
+
+### Avvia Frontend (terminale 2)
 
 ```bash
-# 1. Creare progetto React
-npx create-react-app vari-produzione-frontend
-cd vari-produzione-frontend
-
-# 2. Installare dipendenze
-npm install lucide-react
-
-# 3. Copiare Dashboard.jsx in src/
-# 4. Copiare Dashboard.css in src/
-
-# 5. Aggiornare src/index.js
-# import Dashboard from './Dashboard'
-
-# 6. Creare proxy per API (package.json)
-"proxy": "https://localhost:5001"
-
-# 7. Avviare dev server
-npm start
+cd VariProduzione/vari-produzione-frontend
+npm run dev
 ```
+
+Apri il browser su: http://localhost:5173
 
 ---
 
-## 🗄️ Schema Database
+## 🔌 API Endpoints
 
-```sql
--- Tabella Ordini
-CREATE TABLE Ordini (
-    Id INT PRIMARY KEY IDENTITY,
-    Numero NVARCHAR(50) NOT NULL UNIQUE,
-    Cliente NVARCHAR(200),
-    DataRicezione DATETIME2,
-    DataScadenza DATETIME2,
-    Stato NVARCHAR(50),
-    ProgressoPercentuale INT,
-    CostoStimato DECIMAL(12, 2)
-);
+### Produzione
 
--- Tabella Tasks
-CREATE TABLE Tasks (
-    Id INT PRIMARY KEY IDENTITY,
-    IdOrdine INT NOT NULL FOREIGN KEY REFERENCES Ordini(Id),
-    Nome NVARCHAR(200),
-    Descrizione NVARCHAR(500),
-    DataInizio DATETIME2,
-    DataFine DATETIME2,
-    Stato NVARCHAR(50),
-    ProgressoPercentuale INT,
-    MacchinaAssegnata INT,
-    OreStimate INT,
-    OreReali INT,
-    CostoMateriali DECIMAL(12, 2)
-);
+| Metodo | Endpoint | Descrizione |
+|--------|----------|-------------|
+| GET | `/api/produzione/dashboard` | KPI dashboard completa |
+| GET | `/api/produzione/ordini-ritardo` | Lista ordini in ritardo |
+| GET | `/api/produzione/gantt` | Dati per diagramma Gantt |
+| POST | `/api/produzione/ordini` | Crea nuovo ordine |
+| PUT | `/api/produzione/ordini/{id}/progresso` | Aggiorna progresso ordine |
 
--- Tabella Macchine
-CREATE TABLE Macchine (
-    Id INT PRIMARY KEY IDENTITY,
-    Nome NVARCHAR(100),
-    TipoMacchina NVARCHAR(100),
-    Stato NVARCHAR(50),
-    UltimaManutenzioneProgrammata DATETIME2,
-    TassoUtilizzo FLOAT
-);
+### Gestione
 
--- Indici
-CREATE INDEX idx_ordini_scadenza ON Ordini(DataScadenza);
-CREATE INDEX idx_ordini_stato ON Ordini(Stato);
-CREATE INDEX idx_tasks_fine ON Tasks(DataFine);
-```
+| Metodo | Endpoint | Descrizione |
+|--------|----------|-------------|
+| GET | `/api/gestione/macchine` | Lista macchine |
+| GET | `/api/gestione/operatori` | Lista operatori |
+
+### Sistema
+
+| Metodo | Endpoint | Descrizione |
+|--------|----------|-------------|
+| GET | `/` | Info applicazione |
+| GET | `/health` | Health check |
 
 ---
 
-## 📊 API Endpoints
+## 📦 Deploy
 
-### GET `/api/produzione/dashboard`
-Pannello principale con KPI, alert, status macchine.
-
-**Response:**
-```json
-{
-  "ordiniTotali": 25,
-  "ordiniInRitardo": 3,
-  "taskInCorsso": 12,
-  "efficienza": 78.5,
-  "costiAttuali": 45000.50,
-  "alerts": [
-    {
-      "severita": 3,
-      "messaggio": "Ordine ORD-2024-001 in RITARDO di 2 giorni",
-      "tipoAlert": "ritardo"
-    }
-  ],
-  "macchineStatus": [
-    {
-      "id": 1,
-      "nome": "Tornio CNC-1",
-      "stato": "Operativa",
-      "tassoUtilizzo": 85.5,
-      "taskInEsecuzione": "Fresatura parte A"
-    }
-  ]
-}
-```
-
-### GET `/api/produzione/ordini-ritardo`
-Lista ordini in ritardo sulla scadenza.
-
-### GET `/api/produzione/gantt`
-Dati per visualizzazione Gantt chart.
-
-### POST `/api/produzione/ordini`
-Crea nuovo ordine.
-
-### PUT `/api/produzione/ordini/{id}/progresso`
-Aggiorna progresso ordine e calcola automaticamente stato.
-
----
-
-## 🎨 Personalizzazione
-
-### Temi Colore
-Modifica in `Dashboard.css`:
-```css
-:root {
-  --primary: #1e40af;        /* Blu corporate */
-  --secondary: #0f766e;      /* Teal */
-  --accent: #f97316;         /* Arancione */
-  --danger: #dc2626;         /* Rosso */
-  --success: #10b981;        /* Verde */
-}
-```
-
-### Branding
-- Logo: Aggiungi `<img>` in `.dashboard-header`
-- Colori aziendali: Modifica variabili CSS
-- Font: Cambia `--font-sans` in CSS
-
----
-
-## 📈 Roadmap (Prossime Features)
-
-### Fase 2
-- ✅ SignalR per live updates
-- ✅ Gestione utenti e permessi (JWT)
-- ✅ Export PDF/Excel
-- ✅ Mobile app native (React Native)
-
-### Fase 3
-- 🤖 Predictive analytics (ML.NET)
-- 🤖 Auto-scheduling intelligente
-- 🤖 Anomaly detection su tempi/costi
-- 📊 Advanced reporting e BI
-
-### Fase 4
-- 🔐 SSO integration (Azure AD)
-- 📱 PWA offline support
-- 🌍 Multi-language (IT, EN, DE)
-- ⚙️ Custom workflows
-
----
-
-## 🚀 Deploy
-
-### Azure
-```bash
-# Creare Resource Group
-az group create --name VariProduzione --location eastus
-
-# Deploy con App Service
-dotnet publish -c Release
-# Zip and upload via Azure Portal
-```
-
-### Docker
-```dockerfile
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS builder
-WORKDIR /src
-COPY . .
-RUN dotnet publish -c Release -o /app
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
-WORKDIR /app
-COPY --from=builder /app .
-EXPOSE 5000
-ENTRYPOINT ["dotnet", "VariProduzioneApi.dll"]
-```
+### Build produzione
 
 ```bash
-docker build -t vari-produzione:1.0 .
-docker run -p 5001:5000 -e ConnectionStrings__DefaultConnection="..." vari-produzione:1.0
+# Backend
+dotnet publish -c Release -o ./publish
+
+# Frontend
+npm run build
+# Output in ./dist
+```
+
+### Docker Compose
+
+```bash
+cd Config
+docker-compose up -d
+```
+
+Servizi avviati:
+- Database: `localhost:3306` (MariaDB)
+- API: `localhost:5000`
+- Frontend: `localhost:3000`
+
+---
+
+## 📁 Struttura Progetto
+
+```
+VariProduzione/
+├── .gitignore
+├── README.md
+├── global.json                    # SDK .NET 10
+│
+├── VariProduzione/
+│   ├── VariProduzioneApi/         # Backend .NET 10
+│   │   ├── Program.cs
+│   │   ├── appsettings.json
+│   │   ├── VariProduzioneApi.csproj
+│   │   │
+│   │   ├── Models/                # Entità EF Core
+│   │   │   ├── Enums.cs
+│   │   │   ├── Ordine.cs
+│   │   │   ├── TaskProduzione.cs
+│   │   │   ├── Macchina.cs
+│   │   │   └── Operatore.cs
+│   │   │
+│   │   ├── Data/                  # Database
+│   │   │   ├── ProdDbContext.cs
+│   │   │   └── DbInitializer.cs
+│   │   │
+│   │   ├── Services/              # Business logic
+│   │   │   ├── IOrdineService.cs
+│   │   │   ├── OrdineService.cs
+│   │   │   ├── IMacchinaService.cs
+│   │   │   ├── MacchinaService.cs
+│   │   │   ├── IOperatoreService.cs
+│   │   │   └── OperatoreService.cs
+│   │   │
+│   │   ├── Endpoints/             # Minimal API
+│   │   │   ├── ProduzioneEndpoints.cs
+│   │   │   └── GestioneEndpoints.cs
+│   │   │
+│   │   └── DTOs/                  # Data Transfer Objects
+│   │       ├── DashboardDto.cs
+│   │       ├── AlertDto.cs
+│   │       ├── MacchinaStatusDto.cs
+│   │       └── GanttDataDto.cs
+│   │
+│   └── vari-produzione-frontend/  # Frontend React
+│       ├── index.html
+│       ├── package.json
+│       ├── vite.config.js
+│       │
+│       ├── src/
+│       │   ├── main.jsx
+│       │   ├── App.jsx
+│       │   ├── App.css
+│       │   │
+│       │   ├── pages/             # Pagine
+│       │   │   ├── DashboardPage.jsx
+│       │   │   ├── OrdiniPage.jsx
+│       │   │   ├── MachinePage.jsx
+│       │   │   ├── ImpostazioniPage.jsx
+│       │   │   ├── DatabasePage.jsx
+│       │   │   └── ProfiloPage.jsx
+│       │   │
+│       │   └── services/          # API client
+│       │       └── api.js
+│       │
+│       └── public/
+│
+├── Config/                        # Docker / DevOps
+│   ├── docker-compose.yml
+│   └── nginx.conf
+│
+├── Database/                      # Schema SQL (legacy)
+│   ├── InitialSchema.sql
+│   └── SeedData.sql
+│
+└── Tests/                         # Test xUnit
+    └── VariProduzioneApi.Tests/
 ```
 
 ---
 
-## 🔐 Security
+## 🐛 Troubleshooting
 
-### Implementazioni
-- HTTPS obbligatorio
-- CORS configurato
-- SQL injection prevented (EF Core parameterized)
-- XSS protection (React)
-- CSRF tokens ready (aggiungere nel form)
+### Errore: "A network-related or instance-specific error occurred"
 
-### Todo
-- [ ] Implementare JWT authentication
-- [ ] Rate limiting su API
-- [ ] Audit logging
-- [ ] Encryption per dati sensibili
-- [ ] GDPR compliance
+**Causa**: SQL Server non trovato  
+**Soluzione**: Verifica che SQL Server sia avviato:
+
+```bash
+sqllocaldb i                    # Lista istanze
+sqllocaldb s VariProduzioneDB   # Avvia istanza
+```
+
+### Errore: "The ASP.NET Core developer certificate is not trusted"
+
+**Soluzione**:
+```bash
+dotnet dev-certs https --trust
+```
+
+### Errore: "No compatible .NET SDK was found"
+
+**Soluzione**: Verifica `global.json` e installa .NET 10:
+```bash
+dotnet --list-sdks
+# Se manca, scarica da https://dotnet.microsoft.com/download
+```
+
+### Errore frontend: "process is not defined"
+
+**Causa**: Vite usa `import.meta.env`, non `process.env`  
+**Soluzione**: Già corretto in `src/services/api.js`
 
 ---
 
-## 📞 Support & Customization
+## 👥 Team
 
-### Per aziende Varese:
-1. **Consulenza gratuita** sulla integrazione con sistemi legacy
-2. **Custom fields** per processi aziendali specifici
-3. **Training** per operatori e management
-4. **Manutenzione** e aggiornamenti continui
-
-### Contatti:
-```
-📧 Email: info@variproduzione.it
-📞 Tel: +39 0332 XXXXXX
-🏢 Sede: Varese, Lombardia
-```
+| Ruolo | Nome |
+|-------|------|
+| Sviluppo | Mario Sabetta |
 
 ---
 
 ## 📄 Licenza
 
-MIT License - Libero per uso commerciale
+Proprietà di Vari Produzione S.r.l. - Tutti i diritti riservati.
 
 ---
 
-## 🤝 Contribuenti
+## 📞 Supporto
 
-Progetto open-source sviluppato per PMI manifatturiere italiane.
-
-**Chi usa questo sistema:**
-- Tesar Group
-- Aziende meccaniche Varese
-- Fab a stampi
-- Fonderie
-
----
-
-## 📚 Documentazione Aggiuntiva
-
-### Setup PostgreSQL (alternativa SQL Server)
-```bash
-# Connection string PostgreSQL
-"DefaultConnection": "Host=localhost;Database=vari_produzione;Username=postgres;Password=PASSWORD"
-
-# Aggiungere NuGet
-dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
-```
-
-### Integrazione Existing Systems
-Se hai legacy system:
-1. Import dati via SQL script
-2. API bridge per comunicazione
-3. Gradual migration
-4. Zero downtime strategy
-
----
-
-**V1.0 - Maggio 2026**
-🚀 Pronto per produzione
-⭐ 300+ linee C# + React
-📊 Real-time monitoring
-🎯 Enterprise-ready
+Per assistenza tecnica contattare:  
+📧 mario.sabetta@varese.it  
+🌐 https://github.com/msabetta/VariProduzione
