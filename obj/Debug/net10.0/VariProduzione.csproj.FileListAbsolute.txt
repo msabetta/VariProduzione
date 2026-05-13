@@ -1,0 +1,9 @@
+C:\Scrivania\VariProduzione\obj\Debug\net10.0\VariProduzione.csproj.AssemblyReference.cache
+C:\Scrivania\VariProduzione\obj\Debug\net10.0\rpswa.dswa.cache.json
+C:\Scrivania\VariProduzione\obj\Debug\net10.0\VariProduzione.GeneratedMSBuildEditorConfig.editorconfig
+C:\Scrivania\VariProduzione\obj\Debug\net10.0\VariProduzione.AssemblyInfoInputs.cache
+C:\Scrivania\VariProduzione\obj\Debug\net10.0\VariProduzione.AssemblyInfo.cs
+C:\Scrivania\VariProduzione\obj\Debug\net10.0\VariProduzione.csproj.CoreCompileInputs.cache
+C:\Scrivania\VariProduzione\obj\Debug\net10.0\VariProduzione.MvcApplicationPartsAssemblyInfo.cs
+C:\Scrivania\VariProduzione\obj\Debug\net10.0\VariProduzione.MvcApplicationPartsAssemblyInfo.cache
+C:\Scrivania\VariProduzione\obj\Debug\net10.0\VariProduzione.sourcelink.json

@@ -1,11 +1,10 @@
-import { Link } from "react-router-dom";
+import React from 'react';
 
-
-export default function NotFoundPage() {
-    return (
-        <div>
-            <h1>404 - Page Not Found</h1>
-            <Link to="/">Back to Home</Link>
-        </div>
-    );
+export default function OrdiniPage() {
+  return (
+    <div className="page-container">
+      <h1>Gestione Ordini</h1>
+      <p>Lista ordini in arrivo...</p>
+    </div>
+  );
 }

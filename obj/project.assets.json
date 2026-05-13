@@ -51,19 +51,6 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Cors/2.3.9": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/_._": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/_._": {
-            "related": ".xml"
-          }
-        }
-      },
       "Microsoft.AspNetCore.OpenApi/10.0.7": {
         "type": "package",
         "dependencies": {
@@ -1012,19 +999,6 @@
         "lib/netstandard2.0/Humanizer.dll",
         "lib/netstandard2.0/Humanizer.xml",
         "logo.png"
-      ]
-    },
-    "Microsoft.AspNetCore.Cors/2.3.9": {
-      "sha512": "p1pnw4abepxDxxyU2dJVRqUtDHIUHYo17aRY+FfpvWwoOqFg3mroe+M7sKnqKXxwbbookaLs89wKSFH4CFpKRA==",
-      "type": "package",
-      "path": "microsoft.aspnetcore.cors/2.3.9",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/netstandard2.0/Microsoft.AspNetCore.Cors.dll",
-        "lib/netstandard2.0/Microsoft.AspNetCore.Cors.xml",
-        "microsoft.aspnetcore.cors.2.3.9.nupkg.sha512",
-        "microsoft.aspnetcore.cors.nuspec"
       ]
     },
     "Microsoft.AspNetCore.OpenApi/10.0.7": {
@@ -2314,32 +2288,30 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "Microsoft.AspNetCore.Cors >= 2.3.9",
       "Microsoft.AspNetCore.OpenApi >= 10.0.7",
       "Microsoft.EntityFrameworkCore.SqlServer >= 10.0.7",
       "Microsoft.EntityFrameworkCore.Tools >= 10.0.7"
     ]
   },
   "packageFolders": {
-    "/home/mario/.nuget/packages/": {}
+    "C:\\Users\\MarioSabetta\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/mario/Scrivania/VariProduzione/VariProduzione.csproj",
+      "projectUniqueName": "C:\\Scrivania\\VariProduzione\\VariProduzione.csproj",
       "projectName": "VariProduzione",
-      "projectPath": "/home/mario/Scrivania/VariProduzione/VariProduzione.csproj",
-      "packagesPath": "/home/mario/.nuget/packages/",
-      "outputPath": "/home/mario/Scrivania/VariProduzione/obj/",
+      "projectPath": "C:\\Scrivania\\VariProduzione\\VariProduzione.csproj",
+      "packagesPath": "C:\\Users\\MarioSabetta\\.nuget\\packages\\",
+      "outputPath": "C:\\Scrivania\\VariProduzione\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/mario/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\MarioSabetta\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "/usr/lib/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2364,10 +2336,6 @@
       "net10.0": {
         "targetAlias": "net10.0",
         "dependencies": {
-          "Microsoft.AspNetCore.Cors": {
-            "target": "Package",
-            "version": "[2.3.9, )"
-          },
           "Microsoft.AspNetCore.OpenApi": {
             "target": "Package",
             "version": "[10.0.7, )"
@@ -2402,7 +2370,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.107/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.107/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -2819,17 +2787,5 @@
         }
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1510",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Microsoft.AspNetCore.Cors PackageReference non verrà rimosso. È consigliabile rimuovere questo pacchetto dalle dipendenze, poiché è probabile che non sia necessario.",
-      "libraryId": "Microsoft.AspNetCore.Cors",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  }
 }

@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // --- Servizi Core ---
 builder.Services.AddDbContext<ProdDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? "Server=.;Database=VariProduzione;Trusted_Connection=true;TrustServerCertificate=true;"));
+    ?? "Server=localhost;Database=VariProduzione;Trusted_Connection=true;TrustServerCertificate=true;Encrypt=false"));
 
 builder.Services.AddScoped<IOrdineService, OrdineService>();
 builder.Services.AddScoped<IMacchinaService, MacchinaService>();
@@ -43,11 +43,11 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseCors();
 
 // --- Mapping Endpoints ---
-app.MapProduzionApi();
+app.MapProduzioneApi();
 app.MapGestioneApi();
 
 // Root endpoint for health check
@@ -68,5 +68,26 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Errore durante l'inizializzazione del DB.");
     }
 }
+
+// CORREZIONE: Health check endpoint
+app.MapGet("/health", () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow }));
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ProdDbContext>();
+        DbInitializer.Initialize(context);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Errore durante l''inizializzazione del DB.");
+    }
+}
+
+app.MapGet("/scalar",() => Results.Ok(new { message = "API di Produzione - Version 1.1.0"}));
+
 
 app.Run();

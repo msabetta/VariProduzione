@@ -26,13 +26,14 @@ namespace VariProduzioneApi.Services
                 .Where(o => o.Stato != StatoOrdine.Completato && o.DataScadenza < oggi)
                 .Count();
 
-            var taskInCorsso = tasks.Count(t => t.Stato == StatoTask.InCorsso);
+            // CORREZIONE: Typo taskInCorsso -> taskInCorso
+            var taskInCorso = tasks.Count(t => t.Stato == StatoTask.InCorso);
 
             var dashboard = new DashboardDto
             {
                 OrdiniTotali = ordini.Count,
                 OrdiniInRitardo = ordiniInRitardo,
-                TaskInCorsso = taskInCorsso,
+                TaskInCorso = taskInCorso,  // CORREZIONE: Nome proprieta' corretto
                 Efficienza = CalcolaEfficienzaGlobale(tasks),
                 CostiAttuali = (double)ordini.Sum(o => o.CostoStimato),
                 Alerts = GeneraAlerts(ordini, tasks, macchine),
@@ -43,7 +44,7 @@ namespace VariProduzioneApi.Services
                     Stato = m.Stato,
                     TassoUtilizzo = m.TassoUtilizzo,
                     TaskInEsecuzione = tasks
-                        .FirstOrDefault(t => t.MacchinaAssegnata == m.Id && t.Stato == StatoTask.InCorsso)
+                        .FirstOrDefault(t => t.MacchinaAssegnata == m.Id && t.Stato == StatoTask.InCorso)
                         ?.Nome ?? "---"
                 }).ToList()
             };
@@ -91,22 +92,31 @@ namespace VariProduzioneApi.Services
             if (ordine?.Tasks.Any() == true)
             {
                 ordine.ProgressoPercentuale = (int)ordine.Tasks.Average(t => t.ProgressoPercentuale);
-                
-                // Logica smart: aggiorna lo stato
+
+                // CORREZIONE: Logica smart completa - gestisce anche stato Ritardato
                 if (ordine.ProgressoPercentuale == 100)
                     ordine.Stato = StatoOrdine.Completato;
-                else if (ordine.Tasks.Any(t => t.Stato == StatoTask.InCorsso))
+                else if (ordine.DataScadenza < DateTime.Now)
+                    ordine.Stato = StatoOrdine.Ritardato;
+                else if (ordine.Tasks.Any(t => t.Stato == StatoTask.InCorso))
                     ordine.Stato = StatoOrdine.InProduzione;
+                else
+                    ordine.Stato = StatoOrdine.Pianificato;
 
                 await _context.SaveChangesAsync();
             }
         }
 
+        // CORREZIONE: Efficienza = ore stimate / ore reali (non % completati)
         private double CalcolaEfficienzaGlobale(List<TaskProduzione> tasks)
         {
-            if (!tasks.Any()) return 0;
-            var taskCompletati = tasks.Count(t => t.Stato == StatoTask.Completato);
-            return (taskCompletati * 100.0) / tasks.Count;
+            var tasksCompletati = tasks.Where(t => t.Stato == StatoTask.Completato && t.OreReali > 0).ToList();
+            if (!tasksCompletati.Any()) return 0;
+
+            var oreStimateTotali = tasksCompletati.Sum(t => t.OreStimate);
+            var oreRealiTotali = tasksCompletati.Sum(t => t.OreReali);
+
+            return (oreStimateTotali / (double)oreRealiTotali) * 100;
         }
 
         private List<AlertDto> GeneraAlerts(List<Ordine> ordini, List<TaskProduzione> tasks, List<Macchina> macchine)
@@ -155,10 +165,10 @@ namespace VariProduzioneApi.Services
             return stato switch
             {
                 StatoTask.Completato => "#10b981", // Verde
-                StatoTask.InCorsso => "#3b82f6",   // Blu
+                StatoTask.InCorso => "#3b82f6",    // Blu
                 StatoTask.Bloccato => "#ef4444",   // Rosso
                 StatoTask.InCoda => "#f59e0b",     // Arancione
-                _ => "#9ca3af" // Grigio
+                _ => "#9ca3af"                     // Grigio
             };
         }
     }

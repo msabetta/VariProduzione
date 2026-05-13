@@ -3,36 +3,41 @@ version: '3.8'
 services:
   db:
     image: mariadb:10.6
-    container_name: marioware-mariodb-1
+    container_name: variproduzione-db  # CORREZIONE: Nome coerente
     restart: always
     environment:
-      MARIADB_ROOT_PASSWORD: password
-      MARIADB_DATABASE: marioware
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD:-password}
+      MARIADB_DATABASE: VariProduzione  # CORREZIONE: Nome database corretto
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ../Database:/var/lib/mysql/Database:ro # Mount per seed-data.sh
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   api:
     build:
-      context: ../VariProduzioneApi
+      context: ../VariProduzione/VariProduzioneApi
       dockerfile: Dockerfile
-    container_name: vari-produzione-api
+    container_name: variproduzione-api  # CORREZIONE: Nome coerente
     restart: always
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db;Database=marioware;Uid=root;Pwd=password;
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5000  # CORREZIONE: Solo HTTP in container
+      - ConnectionStrings__DefaultConnection=Server=db;Database=VariProduzione;Uid=root;Pwd=${DB_PASSWORD:-password};Port=3306;
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "5000:5000"
 
   frontend:
     build:
-      context: ../vari-produzione-frontend
+      context: ../VariProduzione/vari-produzione-frontend
       dockerfile: Dockerfile
-    container_name: vari-produzione-frontend
+    container_name: variproduzione-frontend  # CORREZIONE: Nome coerente
     restart: always
     ports:
       - "3000:3000"

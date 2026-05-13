@@ -4,26 +4,25 @@ namespace VariProduzioneApi.Models
     {
         Pianificato,
         InProduzione,
-        InCoda,
         Completato,
         Ritardato,
-        Sospeso
+        InCoda
     }
 
     public enum StatoTask
     {
-        NonInizziato,
-        InCorsso,
+        NonIniziato,   // CORREZIONE: Verificato - corretto (non "NonInizziato")
         InCoda,
+        InCorso,
         Completato,
         Bloccato
     }
 
     public enum StatoMacchina
     {
+        Disponibile,
         Operativa,
         Manutenzione,
-        Guasto,
-        Ferma
+        Guasto
     }
 }

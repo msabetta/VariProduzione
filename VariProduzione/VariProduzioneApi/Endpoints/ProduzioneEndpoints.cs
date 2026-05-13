@@ -10,7 +10,7 @@ namespace VariProduzioneApi.Endpoints
 {
     public static class ProduzioneEndpoints
     {
-        public static void MapProduzionApi(this IEndpointRouteBuilder app)
+        public static void MapProduzioneApi(this IEndpointRouteBuilder app)
         {
             var group = app.MapGroup("/api/produzione")
                 .WithTags("Produzione")
@@ -36,7 +36,7 @@ namespace VariProduzioneApi.Endpoints
                 .WithName("CreateOrdine")
                 .WithDescription("Crea nuovo ordine di produzione");
 
-            // Update progresso
+            // Update progresso - CORREZIONE: Aggiunto [FromBody]
             group.MapPut("/ordini/{id}/progresso", UpdateProgresso)
                 .WithName("UpdateProgresso")
                 .WithDescription("Aggiorna progresso ordine");
@@ -68,12 +68,17 @@ namespace VariProduzioneApi.Endpoints
             return Results.Created($"/api/produzione/ordini/{result.Id}", result);
         }
 
+        // CORREZIONE: Aggiunto [FromBody] UpdateProgressoRequest
         private static async Task<IResult> UpdateProgresso(
             IOrdineService service,
-            int id)
+            int id,
+            [FromBody] UpdateProgressoRequest request)
         {
             await service.UpdateProgressoOrdineAsync(id);
-            return Results.Ok(new { messaggio = "Progresso aggiornato" });
+            return Results.Ok(new { messaggio = "Progresso aggiornato", nuovoProgresso = request.ProgressoPercentuale });
         }
     }
+
+    // CORREZIONE: DTO per la richiesta di aggiornamento progresso
+    public record UpdateProgressoRequest(int ProgressoPercentuale);
 }

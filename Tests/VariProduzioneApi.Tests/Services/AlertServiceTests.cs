@@ -24,28 +24,28 @@ namespace VariProduzioneApi.Tests.Services
                     Severity = AlertSeverity.Medium,
                     Message = "High cost order alert",
                     DateRaised = DateTime.Today
-                }
+                },
                 new Alert
                 {
                     Tipo = AlertTipo.LowStock,
                     Severity = AlertSeverity.Low,
                     Message = "Low stock alert",
                     DateRaised = DateTime.Today
-                }
+                },
                 new Alert
                 {
                     Tipo = AlertTipo.LowStock,
                     Severity = AlertSeverity.Low,
                     Message = "Low stock alert",
                     DateRaised = DateTime.Today
-                }
+                },
                 new Alert
                 {
                     Tipo = AlertTipo.LowStock,
                     Severity = AlertSeverity.Low,
                     Message = "Low stock alert",
                     DateRaised = DateTime.Today
-                }
+                },
                 new Alert
                 {
                     Tipo = AlertTipo.LowStock,
