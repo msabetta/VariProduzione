@@ -25,19 +25,26 @@ Sistema di gestione produzione industriale per monitorare ordini, macchine, oper
 
 ## 🏗️ Architettura
 
-```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│   Frontend      │────▶│   Backend API   │────▶│   SQL Server    │
-│   React + Vite  │◄────│   .NET 10       │◄────│   Database      │
-│   localhost:5173│     │   localhost:5000│     │   VariProduzione│
-└─────────────────┘     └─────────────────┘     └─────────────────┘
+```mermaid
+flowchart LR
+
+    FE[Frontend<br/>React + Vite<br/>localhost:5173]
+
+    API[Backend API<br/>.NET 10 Web API<br/>localhost:5000]
+
+    DB[(SQL Server<br/>Database: VariProduzione)]
+
+    FE <--> |HTTP / REST API| API
+    API <--> |Entity Framework / SQL| DB
 ```
 
-| Componente | Tecnologia | Porta |
-|------------|-----------|-------|
-| Frontend | React 18 + Vite | 5173 (dev) / 3000 (prod) |
-| Backend | .NET 10 Minimal API | 5000 (HTTP) / 5001 (HTTPS) |
-| Database | SQL Server 2022 / LocalDB | 1433 |
+## Stack Tecnologico
+
+| Layer       | Tecnologia                | Configurazione |
+|--------------|----------------------------|----------------|
+| **Frontend** | React 18 + Vite           | `localhost:5173` (dev) / `localhost:3000` (prod) |
+| **Backend**  | .NET 10 Minimal API       | `http://localhost:5000` / `https://localhost:5001` |
+| **Database** | SQL Server 2022 / LocalDB | Porta `1433` |
 
 ---
 
