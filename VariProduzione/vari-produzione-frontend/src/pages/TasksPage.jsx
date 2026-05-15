@@ -41,6 +41,7 @@ export default function TasksPage() {
   const [editingTask, setEditingTask] = useState(null);
   const [assigningTask, setAssigningTask] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+  const [updateId, setUpdateId] = useState(null);
 
   useEffect(() => { loadAll(); }, []);
 
@@ -70,6 +71,17 @@ export default function TasksPage() {
       toast.error('Errore eliminazione');
     }
     setDeleteId(null);
+  };
+
+
+  const handleUpdate = async (id, data) => {
+    try {
+      await updateTask(id, data);
+      toast.success('Task aggiornato!');
+      loadAll();
+    } catch (err) {
+      toast.error('Errore aggiornamento task');
+    } 
   };
 
   const filteredTasks = tasks.filter(t => 
@@ -200,6 +212,14 @@ export default function TasksPage() {
         onConfirm={handleDelete}
         title="Elimina Task"
         message="Sei sicuro di voler eliminare questo task?"
+      />
+
+      <ConfirmDialog
+        isOpen={!!updateId}
+        onClose={() => setUpdateId(null)}
+        onConfirm={handleUpdate}
+        title="Aggiorna Task"
+        message="Sei sicuro di voler aggiornare questo task?"
       />
     </div>
   );
