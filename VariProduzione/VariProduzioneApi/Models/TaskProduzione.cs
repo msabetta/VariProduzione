@@ -1,40 +1,30 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+namespace VariProduzioneApi.Models;
 
-namespace VariProduzioneApi.Models
+public class TaskProduzione
 {
-    public class TaskProduzione
-    {
-        [Key]
-        [Required]
-        public int Id { get; set; }  // CORREZIONE: Rimosso = 0 ridondante
-
-        [Required]
-        public int IdOrdine { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public string Nome { get; set; } = string.Empty;
-
-        [MaxLength(200)]
-        public string Descrizione { get; set; } = string.Empty;
-
-        public DateTime DataInizio { get; set; } = DateTime.Now;
-
-        public DateTime DataFine { get; set; } = DateTime.Now;
-
-        // CORREZIONE: Typo NonInizziato -> NonIniziato
-        public StatoTask Stato { get; set; } = StatoTask.NonIniziato;
-
-        public int ProgressoPercentuale { get; set; } = 0;
-        public int? MacchinaAssegnata { get; set; } = 0;
-        public List<TaskProduzione> TaskDipendenti { get; set; } = new();
-        public int OreStimate { get; set; } = 0;
-        public int OreReali { get; set; } = 0;
-        public decimal CostoMateriali { get; set; } = 0m;
-
-        // Navigation properties
-        public Ordine Ordine { get; set; } = null!;
-    }
+    public int Id { get; set; }
+    public string Titolo { get; set; } = string.Empty;
+    public string? Descrizione { get; set; }
+    public StatoTask Stato { get; set; } = StatoTask.DaFare;
+    public PrioritaTask Priorita { get; set; } = PrioritaTask.Media;
+    public DateTime DataCreazione { get; set; } = DateTime.Now;
+    public DateTime? DataInizio { get; set; }
+    public DateTime? DataFine { get; set; }
+    public int? DurataStimataMinuti { get; set; }
+    
+    // Legacy
+    public int? IdOrdine { get; set; }
+    public string? Nome { get; set; }
+    public int? ProgressoPercentuale { get; set; }
+    public string? MacchinaAssegnata { get; set; }
+    public decimal? OreStimate { get; set; }
+    public decimal? OreReali { get; set; }
+    public decimal? CostoMateriali { get; set; }
+    
+    public int? OrdineId { get; set; }
+    public Ordine? Ordine { get; set; }
+    public int? MacchinaId { get; set; }
+    public Macchina? Macchina { get; set; }
+    public int? OperatoreId { get; set; }
+    public Operatore? Operatore { get; set; }
 }

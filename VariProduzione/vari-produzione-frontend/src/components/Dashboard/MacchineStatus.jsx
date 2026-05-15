@@ -1,4 +1,9 @@
 import React from 'react';
+// Prima:
+import { fetchDashboard } from '../services/api';
+
+// Dopo:
+import { getDashboard } from '../services/api';
 
 const MacchineStatus = ({ macchine }) => (
   <div className="macchine-container">

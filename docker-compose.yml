@@ -1,15 +1,34 @@
 services:
-  sqlserver:
+  db:
     image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: vps-db
+    environment:
+      SA_PASSWORD: "YourStrong@Passw0rd"
+      ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
-    environment:
-      SA_PASSWORD: "[PASSWORD]"
-      ACCEPT_EULA: "Y"
-      MSSQL_PID: "Express" # Developer, Standard, Express
     volumes:
-      - sqlserver-data:/var/opt/mssql
+      - sql_data:/var/opt/mssql
+
+  api:
+    build: ./VariProduzione/VariProduzioneApi
+    container_name: vps-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5000
+      - ConnectionStrings__DefaultConnection=Server=db;Database=VariProduzione;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./VariProduzione/vari-produzione-frontend
+    container_name: vps-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api
 
 volumes:
-  sqlserver-data: # è un volume persistente, mantiene i dati anche se riavvii il container.
-    name: VariProduzione-db-data
+  sql_data:

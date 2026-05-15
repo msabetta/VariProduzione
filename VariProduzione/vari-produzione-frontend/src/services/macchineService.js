@@ -1,12 +1,12 @@
 import api from './api';
 
 export const getAllMacchine = async () => {
-    const response = await api.get('/gestione/macchine');
+    const response = await api.get('/macchine');
     return response.data;
 };
 
 export const updateStatoMacchina = async (id, stato) => {
-    const response = await api.put(`/gestione/macchine/${id}/stato`, stato);
+    const response = await api.put(`/macchine/${id}/stato`, stato);
     return response.data;
 };
 

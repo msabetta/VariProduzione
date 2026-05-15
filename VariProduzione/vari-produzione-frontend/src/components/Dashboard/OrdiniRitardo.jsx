@@ -1,4 +1,5 @@
 import React from 'react';
+import { AlertCircle } from 'lucide-react';
 
 const OrdiniRitardo = ({ ordini }) => (
   <div className="ritardo-container">

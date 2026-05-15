@@ -5,6 +5,11 @@ import GanttChart from './GanttChart';
 import OrdiniRitardo from './OrdiniRitardo';
 import MacchineStatus from './MacchineStatus';
 import KpiGrid from './KpiGrid';
+// Prima:
+import { fetchDashboard } from '../services/api';
+
+// Dopo:
+import { getDashboard } from '../services/api';
 
 export default function Dashboard() {
   const [dashboard, setDashboard] = useState(null);

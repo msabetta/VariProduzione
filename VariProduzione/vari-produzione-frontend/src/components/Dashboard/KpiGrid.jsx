@@ -1,5 +1,11 @@
 import React from 'react';
 import './Dashboard.css';
+import { AlertCircle } from 'lucide-react';
+// Prima:
+import { fetchDashboard } from '../services/api';
+
+// Dopo:
+import { getDashboard } from '../services/api';
 
 const KpiGrid = ({ icon: Icon, title, value, subtitle, color = 'blue' }) => (
     <div className={`dashboard-card card-${color}`}>

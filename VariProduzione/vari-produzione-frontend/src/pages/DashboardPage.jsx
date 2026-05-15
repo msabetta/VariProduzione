@@ -1,91 +1,123 @@
-import React, { useEffect, useState } from 'react';
-import { fetchDashboard } from '../services/api';
+import { useState, useEffect } from 'react';
+import { AlertTriangle, CheckCircle, Clock, Package } from 'lucide-react';
+import { getDashboard, getOrdiniRitardo } from '../services/api';
+import toast from 'react-hot-toast';
+import GanttChart from '../components/GanttChart';
+import React from 'react';
 
 export default function DashboardPage() {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
+  const [dashboard, setDashboard] = useState(null);
+  const [alerts, setAlerts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchDashboard()
-      .then(setData)
-      .catch(err => setError(err.message));
+    loadDashboard();
   }, []);
 
-  if (error) return <div style={{color:'red', padding:20}}>Errore: {error}</div>;
-  if (!data) return <div style={{padding:20}}>Caricamento...</div>;
+  const loadDashboard = async () => {
+    try {
+      setLoading(true);
+      const [dash, ritardo] = await Promise.all([
+        getDashboard(),
+        getOrdiniRitardo()
+      ]);
+      setDashboard(dash);
+      setAlerts(ritardo);
+    } catch (err) {
+      toast.error('Errore caricamento dashboard');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) return <div className="card">Caricamento dashboard...</div>;
 
   return (
-    <div style={{padding:20, fontFamily:'Arial, sans-serif', maxWidth:1200, margin:'0 auto'}}>
-      <h1 style={{color:'#1e40af', marginBottom:30}}>Dashboard di Controllo della Produzione</h1>
-      
-      {/* KPI Cards */}
-      <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))', gap:20, marginBottom:30}}>
-        <div style={{background:'#1e40af', color:'white', padding:20, borderRadius:12, boxShadow:'0 4px 6px rgba(0,0,0,0.1)'}}>
-          <h3 style={{margin:0, fontSize:14, opacity:0.9}}>Ordini Totali</h3>
-          <p style={{fontSize:36, fontWeight:'bold', margin:'10px 0 0 0'}}>{data.ordiniTotali}</p>
-        </div>
-        
-        <div style={{background:'#dc2626', color:'white', padding:20, borderRadius:12, boxShadow:'0 4px 6px rgba(0,0,0,0.1)'}}>
-          <h3 style={{margin:0, fontSize:14, opacity:0.9}}>Ordini in Ritardo</h3>
-          <p style={{fontSize:36, fontWeight:'bold', margin:'10px 0 0 0'}}>{data.ordiniInRitardo}</p>
-        </div>
-        
-        <div style={{background:'#059669', color:'white', padding:20, borderRadius:12, boxShadow:'0 4px 6px rgba(0,0,0,0.1)'}}>
-          <h3 style={{margin:0, fontSize:14, opacity:0.9}}>Task in Corso</h3>
-          <p style={{fontSize:36, fontWeight:'bold', margin:'10px 0 0 0'}}>{data.taskInCorso}</p>
-        </div>
-        
-        <div style={{background:'#7c3aed', color:'white', padding:20, borderRadius:12, boxShadow:'0 4px 6px rgba(0,0,0,0.1)'}}>
-          <h3 style={{margin:0, fontSize:14, opacity:0.9}}>Efficienza</h3>
-          <p style={{fontSize:36, fontWeight:'bold', margin:'10px 0 0 0'}}>{data.efficienza?.toFixed(1)}%</p>
-        </div>
+    <div>
+      <div className="page-header">
+        <h1>Dashboard</h1>
       </div>
 
-      {/* Costi */}
-      <div style={{background:'#f3f4f6', padding:20, borderRadius:12, marginBottom:30}}>
-        <h3 style={{margin:'0 0 10px 0', color:'#374151'}}>Costi Attuali</h3>
-        <p style={{fontSize:24, fontWeight:'bold', color:'#1e40af', margin:0}}>
-          €{data.costiAttuali?.toLocaleString('it-IT', {minimumFractionDigits:2, maximumFractionDigits:2})}
-        </p>
+      <div className="stats-grid">
+        <StatCard 
+          icon={Package} 
+          label="Totale Ordini" 
+          value={dashboard?.totaleOrdini || 0}
+          color="#2563eb"
+        />
+        <StatCard 
+          icon={Clock} 
+          label="In Produzione" 
+          value={dashboard?.inProduzione || 0}
+          color="#f59e0b"
+        />
+        <StatCard 
+          icon={CheckCircle} 
+          label="Completati" 
+          value={dashboard?.completati || 0}
+          color="#10b981"
+        />
+        <StatCard 
+          icon={AlertTriangle} 
+          label="In Ritardo" 
+          value={dashboard?.inRitardo || 0}
+          color="#ef4444"
+        />
       </div>
 
-      {/* Alert */}
-      <div style={{background:'#fef3c7', padding:20, borderRadius:12, border:'1px solid #f59e0b'}}>
-        <h3 style={{margin:'0 0 15px 0', color:'#92400e'}}>⚠️ Alert Attivi</h3>
-        {data.alerts?.map((alert, idx) => (
-          <div key={idx} style={{
-            padding:12, 
-            marginBottom:8, 
-            borderRadius:8, 
-            background: alert.severita === 3 ? '#fee2e2' : '#fed7aa',
-            color: alert.severita === 3 ? '#991b1b' : '#9a3412',
-            fontWeight: alert.severita === 3 ? 'bold' : 'normal'
-          }}>
-            {alert.messaggio}
+      <div className="card">
+        <div className="card-header">
+          <h3>⚠️ Ordini in Ritardo</h3>
+        </div>
+        {alerts.length === 0 ? (
+          <p style={{ color: '#6b7280' }}>Nessun ordine in ritardo. Ottimo lavoro!</p>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            {alerts.map(alert => (
+              <div key={alert.id} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                padding: '0.875rem 1rem',
+                background: '#fef2f2',
+                border: '1px solid #fecaca',
+                borderRadius: '8px'
+              }}>
+                <AlertTriangle size={20} color="#ef4444" />
+                <div>
+                  <div style={{ fontWeight: 500, color: '#991b1b' }}>{alert.messaggio}</div>
+                  <div style={{ fontSize: '0.75rem', color: '#b91c1c' }}>
+                    {new Date(alert.data).toLocaleDateString('it-IT')}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
+        <GanttChart viewMode="Week" />
       </div>
+    </div>
+  );
+}
 
-      {/* Macchine */}
-      <div style={{marginTop:30}}>
-        <h3 style={{color:'#374151'}}>Stato Macchine</h3>
-        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))', gap:15}}>
-          {data.macchineStatus?.map(macchina => (
-            <div key={macchina.id} style={{
-              padding:15, 
-              borderRadius:8, 
-              background: macchina.stato === 1 ? '#d1fae5' : '#fee2e2',
-              border: `2px solid ${macchina.stato === 1 ? '#059669' : '#dc2626'}`
-            }}>
-              <strong>{macchina.nome}</strong>
-              <p style={{margin:'5px 0', fontSize:12, color:'#6b7280'}}>
-                Stato: {macchina.stato === 1 ? 'Operativa' : 'Guasto/Manutenzione'}
-              </p>
-              <p style={{margin:0, fontSize:12}}>Utilizzo: {macchina.tassoUtilizzo}%</p>
-            </div>
-          ))}
+function StatCard({ icon: Icon, label, value, color }) {
+  return (
+    <div className="stat-card">
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+        <div style={{
+          width: 40,
+          height: 40,
+          borderRadius: 10,
+          background: `${color}15`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <Icon size={20} color={color} />
         </div>
+        <span className="label">{label}</span>
       </div>
+      <div className="value" style={{ color }}>{value}</div>
     </div>
   );
 }

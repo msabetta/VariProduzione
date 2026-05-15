@@ -1,5 +1,10 @@
 import React from 'react';
 import './Dashboard.css';
+// Prima:
+import { fetchDashboard } from '../services/api';
+
+// Dopo:
+import { getDashboard } from '../services/api';
 
 const GanttChart = ({ data }) => {
   const getWeeks = () => {

@@ -1,45 +1,68 @@
 using Microsoft.EntityFrameworkCore;
 using VariProduzioneApi.Models;
 
-namespace VariProduzioneApi.Data
+
+namespace VariProduzioneApi.Data;
+
+public class ProdDbContext : DbContext
 {
-    public class ProdDbContext : DbContext
+    public ProdDbContext(DbContextOptions<ProdDbContext> options) : base(options) { }
+
+    public DbSet<Ordine> Ordini => Set<Ordine>();
+    public DbSet<Macchina> Macchine => Set<Macchina>();
+    public DbSet<Operatore> Operatori => Set<Operatore>();
+    public DbSet<TaskProduzione> Tasks => Set<TaskProduzione>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        public DbSet<Ordine> Ordini { get; set; }
-        public DbSet<TaskProduzione> Tasks { get; set; }
-        public DbSet<Macchina> Macchine { get; set; }
-        public DbSet<Operatore> Operatori { get; set; }
+        base.OnModelCreating(modelBuilder);
 
-        public ProdDbContext(DbContextOptions<ProdDbContext> options) : base(options) { }
-
-        // CORREZIONE: Aggiunto OnConfiguring per supportare dotnet ef migrations
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // Configurazione Ordine
+        modelBuilder.Entity<Ordine>(entity =>
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=.;Database=VariProduzione;Trusted_Connection=true;TrustServerCertificate=true;");
-            }
-        }
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Codice).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.Cliente).IsRequired().HasMaxLength(200);
+            entity.HasIndex(e => e.Codice).IsUnique();
+        });
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        // Configurazione Macchina
+        modelBuilder.Entity<Macchina>(entity =>
         {
-            base.OnModelCreating(modelBuilder);
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Codice).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.Nome).IsRequired().HasMaxLength(200);
+            entity.HasIndex(e => e.Codice).IsUnique();
+        });
 
-            // Configurazione relazioni
-            modelBuilder.Entity<Ordine>()
-                .HasMany(o => o.Tasks)
-                .WithOne(t => t.Ordine)
-                .HasForeignKey(t => t.IdOrdine)
-                .OnDelete(DeleteBehavior.Cascade);
+        // Configurazione Operatore
+        modelBuilder.Entity<Operatore>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Nome).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Cognome).IsRequired().HasMaxLength(100);
+        });
 
-            // Indici per performance
-            modelBuilder.Entity<Ordine>().HasIndex(o => o.DataScadenza);
-            modelBuilder.Entity<Ordine>().HasIndex(o => o.Stato);
-            modelBuilder.Entity<TaskProduzione>().HasIndex(t => t.DataFine);
-
-            // CORREZIONE: Aggiunti indici compositi
-            modelBuilder.Entity<TaskProduzione>().HasIndex(t => new { t.IdOrdine, t.Stato });
-            modelBuilder.Entity<Macchina>().HasIndex(m => m.Stato);
-        }
+        // Configurazione TaskProduzione
+        modelBuilder.Entity<TaskProduzione>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Titolo).IsRequired().HasMaxLength(200);
+            
+            entity.HasOne(e => e.Ordine)
+                  .WithMany(o => o.Tasks)
+                  .HasForeignKey(e => e.OrdineId)
+                  .OnDelete(DeleteBehavior.SetNull);
+                  
+            entity.HasOne(e => e.Macchina)
+                  .WithMany(m => m.TasksAssegnati)
+                  .HasForeignKey(e => e.MacchinaId)
+                  .OnDelete(DeleteBehavior.SetNull);
+                  
+            entity.HasOne(e => e.Operatore)
+                  .WithMany(o => o.TasksAssegnati)
+                  .HasForeignKey(e => e.OperatoreId)
+                  .OnDelete(DeleteBehavior.SetNull);
+        });
     }
 }

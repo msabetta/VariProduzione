@@ -1,84 +1,65 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using System.Threading.Tasks;
-using VariProduzioneApi.Models;
+using VariProduzioneApi.DTOs;
 using VariProduzioneApi.Services;
 
-namespace VariProduzioneApi.Endpoints
+namespace VariProduzioneApi.Endpoints;
+
+public static class ProduzioneEndpoints
 {
-    public static class ProduzioneEndpoints
+    public static IEndpointRouteBuilder MapProduzioneEndpoints(this IEndpointRouteBuilder app)
     {
-        public static void MapProduzioneApi(this IEndpointRouteBuilder app)
-        {
-            var group = app.MapGroup("/api/produzione")
-                .WithTags("Produzione")
-                .WithOpenApi();
+        var group = app.MapGroup("/api/produzione")
+            .WithTags("Produzione")
+            .WithOpenApi();
 
-            // Dashboard principale
-            group.MapGet("/dashboard", GetDashboard)
-                .WithName("GetDashboard")
-                .WithDescription("Pannello di controllo principale con KPI, alert e status macchine");
-
-            // Ordini in ritardo
-            group.MapGet("/ordini-ritardo", GetOrdiniRitardo)
-                .WithName("GetOrdiniRitardo")
-                .WithDescription("Lista ordini in ritardo sulla scadenza");
-
-            // Dati Gantt
-            group.MapGet("/gantt", GetGanttData)
-                .WithName("GetGanttData")
-                .WithDescription("Dati per visualizzazione Gantt dinamica");
-
-            // Creare ordine
-            group.MapPost("/ordini", CreateOrdine)
-                .WithName("CreateOrdine")
-                .WithDescription("Crea nuovo ordine di produzione");
-
-            // Update progresso - CORREZIONE: Aggiunto [FromBody]
-            group.MapPut("/ordini/{id}/progresso", UpdateProgresso)
-                .WithName("UpdateProgresso")
-                .WithDescription("Aggiorna progresso ordine");
-        }
-
-        private static async Task<IResult> GetDashboard(IOrdineService service)
+        // GET /api/produzione/dashboard
+        group.MapGet("/dashboard", async (IOrdineService service) =>
         {
             var dashboard = await service.GetDashboardAsync();
             return Results.Ok(dashboard);
-        }
+        })
+        .WithName("GetDashboard")
+        .Produces<DashboardDto>(StatusCodes.Status200OK);
 
-        private static async Task<IResult> GetOrdiniRitardo(IOrdineService service)
+        // GET /api/produzione/ordini-ritardo
+        group.MapGet("/ordini-ritardo", async (IOrdineService service) =>
         {
             var ordini = await service.GetOrdiniInRitardoAsync();
             return Results.Ok(ordini);
-        }
+        })
+        .WithName("GetOrdiniRitardo")
+        .Produces<IEnumerable<AlertDto>>(StatusCodes.Status200OK);
 
-        private static async Task<IResult> GetGanttData(IOrdineService service)
+        // GET /api/produzione/gantt
+        group.MapGet("/gantt", async (IOrdineService service) =>
         {
             var gantt = await service.GetGanttDataAsync();
             return Results.Ok(gantt);
-        }
+        })
+        .WithName("GetGanttData")
+        .Produces<GanttDataDto>(StatusCodes.Status200OK);
 
-        private static async Task<IResult> CreateOrdine(
-            IOrdineService service,
-            [FromBody] Ordine ordine)
+        // POST /api/produzione/ordini (legacy)
+        group.MapPost("/ordini", async (CreaOrdineDto dto, IOrdineService service) =>
         {
-            var result = await service.CreateOrdineAsync(ordine);
-            return Results.Created($"/api/produzione/ordini/{result.Id}", result);
-        }
+            var ordine = await service.CreateOrdineAsync(dto);
+            return Results.Created($"/api/ordini/{ordine.Id}", ordine);
+        })
+        .WithName("CreateOrdineLegacy")
+        .Produces<OrdineDetailDto>(StatusCodes.Status201Created);
 
-        // CORREZIONE: Aggiunto [FromBody] UpdateProgressoRequest
-        private static async Task<IResult> UpdateProgresso(
-            IOrdineService service,
-            int id,
-            [FromBody] UpdateProgressoRequest request)
+        // PUT /api/produzione/ordini/{id}/progresso (legacy)
+        group.MapPut("/ordini/{id}/progresso", async (int id, AggiornaProgressoOrdineDto dto, IOrdineService service) =>
         {
-            await service.UpdateProgressoOrdineAsync(id);
-            return Results.Ok(new { messaggio = "Progresso aggiornato", nuovoProgresso = request.ProgressoPercentuale });
-        }
+            var ordine = await service.UpdateProgressoOrdineAsync(id, dto);
+            return ordine is not null ? Results.Ok(ordine) : Results.NotFound();
+        })
+        .WithName("UpdateProgressoLegacy")
+        .Produces<OrdineDetailDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
+
+        return app;
     }
-
-    // CORREZIONE: DTO per la richiesta di aggiornamento progresso
-    public record UpdateProgressoRequest(int ProgressoPercentuale);
 }

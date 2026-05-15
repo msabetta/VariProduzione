@@ -1,28 +1,36 @@
-namespace VariProduzioneApi.Models
+namespace VariProduzioneApi.Models;
+
+public enum StatoOrdine
 {
-    public enum StatoOrdine
-    {
-        Pianificato,
-        InProduzione,
-        Completato,
-        Ritardato,
-        InCoda
-    }
+    Bozza,
+    Confermato,
+    InProduzione,
+    Completato,
+    Annullato,
+    Ritardato
+}
 
-    public enum StatoTask
-    {
-        NonIniziato,   // CORREZIONE: Verificato - corretto (non "NonInizziato")
-        InCoda,
-        InCorso,
-        Completato,
-        Bloccato
-    }
+public enum StatoMacchina
+{
+    Disponibile,
+    InUso,
+    Manutenzione,
+    FuoriServizio,
+    Operativa
+}
 
-    public enum StatoMacchina
-    {
-        Disponibile,
-        Operativa,
-        Manutenzione,
-        Guasto
-    }
+public enum StatoTask
+{
+    DaFare,
+    InCorso,
+    Completato,
+    Bloccato
+}
+
+public enum PrioritaTask
+{
+    Bassa,
+    Media,
+    Alta,
+    Critica
 }

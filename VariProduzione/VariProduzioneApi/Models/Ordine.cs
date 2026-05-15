@@ -1,35 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+namespace VariProduzioneApi.Models;
 
-namespace VariProduzioneApi.Models
+public class Ordine
 {
-    public class Ordine
-    {
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        [MaxLength(20)]
-        public string Numero { get; set; } = string.Empty;
-
-        [MaxLength(100)]
-        public string Cliente { get; set; } = string.Empty;
-
-        public DateTime DataRicezione { get; set; } = DateTime.Now;
-
-        public DateTime DataScadenza { get; set; } = DateTime.Now;
-
-        public StatoOrdine Stato { get; set; } = StatoOrdine.Pianificato;
-
-        public int ProgressoPercentuale { get; set; } = 0;
-
-        public List<TaskProduzione> Tasks { get; set; } = new();
-
-        // CORREZIONE: Rimosso IdResponsabile duplicato, uso solo navigation property
-        public int? ResponsabileId { get; set; }
-        public Operatore Responsabile { get; set; } = null!;
-
-        public decimal CostoStimato { get; set; } = 0.0m;
-    }
+    public int Id { get; set; }
+    public string Codice { get; set; } = string.Empty;
+    public string Cliente { get; set; } = string.Empty;
+    public string? Descrizione { get; set; }
+    public DateTime DataCreazione { get; set; } = DateTime.Now;
+    public DateTime? DataConsegna { get; set; }
+    public StatoOrdine Stato { get; set; } = StatoOrdine.Bozza;
+    public int Progresso { get; set; } = 0;
+    
+    // Legacy
+    public string? Numero { get; set; }
+    public DateTime? DataRicezione { get; set; }
+    public DateTime? DataScadenza { get; set; }
+    public int? ProgressoPercentuale { get; set; }
+    public decimal? CostoStimato { get; set; }
+    public string? Responsabile { get; set; }
+    
+    public ICollection<TaskProduzione> Tasks { get; set; } = new List<TaskProduzione>();
 }

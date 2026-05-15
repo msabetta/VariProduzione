@@ -1,5 +1,11 @@
 import React from 'react';
+import { AlertCircle } from 'lucide-react';
 import './Dashboard.css';
+// Prima:
+import { fetchDashboard } from '../services/api';
+
+// Dopo:
+import { getDashboard } from '../services/api';
 
 const DashboardCard = ({ icon: Icon, title, value, subtitle, color = 'blue' }) => (
   <div className={`dashboard-card card-${color}`}>

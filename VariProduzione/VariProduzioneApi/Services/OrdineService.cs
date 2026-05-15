@@ -1,175 +1,188 @@
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using VariProduzioneApi.Data;
 using VariProduzioneApi.DTOs;
 using VariProduzioneApi.Models;
 
-namespace VariProduzioneApi.Services
+namespace VariProduzioneApi.Services;
+
+public class OrdineService : IOrdineService
 {
-    public class OrdineService : IOrdineService
+    private readonly ProdDbContext _context;
+
+    public OrdineService(ProdDbContext context)
     {
-        private readonly ProdDbContext _context;
+        _context = context;
+    }
 
-        public OrdineService(ProdDbContext context) => _context = context;
+    // ========== METODI CRUD STANDARD ==========
 
-        public async Task<DashboardDto> GetDashboardAsync()
+    public async Task<IEnumerable<OrdineListItemDto>> GetAllAsync()
+    {
+        return await _context.Ordini
+            .AsNoTracking()
+            .Include(o => o.Tasks)
+            .Select(o => new OrdineListItemDto(
+                o.Id,
+                o.Codice,
+                o.Cliente,
+                o.DataCreazione,
+                o.DataConsegna,
+                o.Stato,
+                o.Progresso,
+                o.Tasks.Count
+            ))
+            .ToListAsync();
+    }
+
+    public async Task<OrdineDetailDto?> GetByIdAsync(int id)
+    {
+        var ordine = await _context.Ordini
+            .AsNoTracking()
+            .Include(o => o.Tasks)
+            .ThenInclude(t => t.Macchina)
+            .Include(o => o.Tasks)
+            .ThenInclude(t => t.Operatore)
+            .FirstOrDefaultAsync(o => o.Id == id);
+
+        if (ordine == null) return null;
+        return MapToDetailDto(ordine);
+    }
+
+    public async Task<OrdineDetailDto> CreateAsync(CreaOrdineDto dto)
+    {
+        var ordine = new Ordine
         {
-            var ordini = await _context.Ordini.ToListAsync();
-            var tasks = await _context.Tasks.ToListAsync();
-            var macchine = await _context.Macchine.ToListAsync();
+            Codice = dto.Codice,
+            Cliente = dto.Cliente,
+            Descrizione = dto.Descrizione,
+            DataConsegna = dto.DataConsegna
+        };
+        _context.Ordini.Add(ordine);
+        await _context.SaveChangesAsync();
+        return await GetByIdAsync(ordine.Id)
+            ?? throw new InvalidOperationException("Ordine creato ma non trovato");
+    }
 
-            var oggi = DateTime.Now;
-            var ordiniInRitardo = ordini
-                .Where(o => o.Stato != StatoOrdine.Completato && o.DataScadenza < oggi)
-                .Count();
+    public async Task<OrdineDetailDto?> UpdateAsync(int id, AggiornaOrdineDto dto)
+    {
+        var ordine = await _context.Ordini.FindAsync(id);
+        if (ordine == null) return null;
+        ordine.Cliente = dto.Cliente;
+        ordine.Descrizione = dto.Descrizione;
+        ordine.DataConsegna = dto.DataConsegna;
+        ordine.Stato = dto.Stato;
+        await _context.SaveChangesAsync();
+        return await GetByIdAsync(id);
+    }
 
-            // CORREZIONE: Typo taskInCorsso -> taskInCorso
-            var taskInCorso = tasks.Count(t => t.Stato == StatoTask.InCorso);
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var ordine = await _context.Ordini.FindAsync(id);
+        if (ordine == null) return false;
+        _context.Ordini.Remove(ordine);
+        await _context.SaveChangesAsync();
+        return true;
+    }
 
-            var dashboard = new DashboardDto
+    public async Task<OrdineDetailDto?> UpdateProgressoAsync(int id, AggiornaProgressoOrdineDto dto)
+    {
+        var ordine = await _context.Ordini.FindAsync(id);
+        if (ordine == null) return null;
+        ordine.Progresso = Math.Clamp(dto.Progresso, 0, 100);
+        if (ordine.Progresso == 100) ordine.Stato = StatoOrdine.Completato;
+        else if (ordine.Progresso > 0) ordine.Stato = StatoOrdine.InProduzione;
+        await _context.SaveChangesAsync();
+        return await GetByIdAsync(id);
+    }
+
+    // ========== METODI LEGACY ==========
+
+    public async Task<DashboardDto> GetDashboardAsync()
+    {
+        var totali = await _context.Ordini.CountAsync();
+        var inProduzione = await _context.Ordini.CountAsync(o => o.Stato == StatoOrdine.InProduzione);
+        var completati = await _context.Ordini.CountAsync(o => o.Stato == StatoOrdine.Completato);
+        var inRitardo = await _context.Ordini.CountAsync(o => o.Stato == StatoOrdine.Ritardato);
+        return new DashboardDto
+        {
+            TotaleOrdini = totali,
+            InProduzione = inProduzione,
+            Completati = completati,
+            InRitardo = inRitardo
+        };
+    }
+
+    public async Task<IEnumerable<AlertDto>> GetOrdiniInRitardoAsync()
+    {
+        return await _context.Ordini
+            .AsNoTracking()
+            .Where(o => o.Stato == StatoOrdine.Ritardato || 
+                       (o.DataScadenza.HasValue && o.DataScadenza < DateTime.Now && o.Stato != StatoOrdine.Completato))
+            .Select(o => new AlertDto
             {
-                OrdiniTotali = ordini.Count,
-                OrdiniInRitardo = ordiniInRitardo,
-                TaskInCorso = taskInCorso,  // CORREZIONE: Nome proprieta' corretto
-                Efficienza = CalcolaEfficienzaGlobale(tasks),
-                CostiAttuali = (double)ordini.Sum(o => o.CostoStimato),
-                Alerts = GeneraAlerts(ordini, tasks, macchine),
-                MacchineStatus = macchine.Select(m => new MacchinaStatusDto
-                {
-                    Id = m.Id,
-                    Nome = m.Nome,
-                    Stato = m.Stato,
-                    TassoUtilizzo = m.TassoUtilizzo,
-                    TaskInEsecuzione = tasks
-                        .FirstOrDefault(t => t.MacchinaAssegnata == m.Id && t.Stato == StatoTask.InCorso)
-                        ?.Nome ?? "---"
-                }).ToList()
-            };
+                Id = o.Id,
+                Messaggio = $"Ordine {o.Codice} in ritardo",
+                Tipo = "Ritardo",
+                Data = o.DataScadenza ?? DateTime.Now
+            })
+            .ToListAsync();
+    }
 
-            return dashboard;
-        }
-
-        public async Task<List<Ordine>> GetOrdiniInRitardoAsync()
+    public async Task<GanttDataDto> GetGanttDataAsync()
+    {
+        var tasks = await _context.Tasks
+            .AsNoTracking()
+            .Include(t => t.Ordine)
+            .Where(t => t.OrdineId.HasValue)
+            .ToListAsync();
+            
+        return new GanttDataDto
         {
-            var oggi = DateTime.Now;
-            return await _context.Ordini
-                .Where(o => o.DataScadenza < oggi && o.Stato != StatoOrdine.Completato)
-                .OrderBy(o => o.DataScadenza)
-                .ToListAsync();
-        }
-
-        public async Task<List<GanttDataDto>> GetGanttDataAsync()
-        {
-            var tasks = await _context.Tasks.ToListAsync();
-            return tasks.Select(t => new GanttDataDto
+            Tasks = tasks.Select(t => new GanttTaskDto
             {
                 Id = t.Id,
-                Nome = t.Nome,
-                DataInizio = t.DataInizio,
-                DataFine = t.DataFine,
-                Progresso = t.ProgressoPercentuale,
-                TaskDipendenti = t.TaskDipendenti,
-                Colore = OttieniColoreTask(t.Stato, t.ProgressoPercentuale)
-            }).ToList();
-        }
+                Name = t.Titolo,
+                Start = t.DataInizio ?? t.DataCreazione,
+                End = t.DataFine ?? t.DataCreazione.AddHours(1),
+                Progresso = t.ProgressoPercentuale ?? 0
+            }).ToList()
+        };
+    }
 
-        public async Task<Ordine> CreateOrdineAsync(Ordine ordine)
-        {
-            _context.Ordini.Add(ordine);
-            await _context.SaveChangesAsync();
-            return ordine;
-        }
+    public async Task<OrdineDetailDto> CreateOrdineAsync(CreaOrdineDto dto)
+    {
+        return await CreateAsync(dto);
+    }
 
-        public async Task UpdateProgressoOrdineAsync(int idOrdine)
-        {
-            var ordine = await _context.Ordini
-                .Include(o => o.Tasks)
-                .FirstOrDefaultAsync(o => o.Id == idOrdine);
+    public async Task<OrdineDetailDto?> UpdateProgressoOrdineAsync(int id, AggiornaProgressoOrdineDto dto)
+    {
+        return await UpdateProgressoAsync(id, dto);
+    }
 
-            if (ordine?.Tasks.Any() == true)
-            {
-                ordine.ProgressoPercentuale = (int)ordine.Tasks.Average(t => t.ProgressoPercentuale);
+    // ========== HELPER ==========
 
-                // CORREZIONE: Logica smart completa - gestisce anche stato Ritardato
-                if (ordine.ProgressoPercentuale == 100)
-                    ordine.Stato = StatoOrdine.Completato;
-                else if (ordine.DataScadenza < DateTime.Now)
-                    ordine.Stato = StatoOrdine.Ritardato;
-                else if (ordine.Tasks.Any(t => t.Stato == StatoTask.InCorso))
-                    ordine.Stato = StatoOrdine.InProduzione;
-                else
-                    ordine.Stato = StatoOrdine.Pianificato;
-
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        // CORREZIONE: Efficienza = ore stimate / ore reali (non % completati)
-        private double CalcolaEfficienzaGlobale(List<TaskProduzione> tasks)
-        {
-            var tasksCompletati = tasks.Where(t => t.Stato == StatoTask.Completato && t.OreReali > 0).ToList();
-            if (!tasksCompletati.Any()) return 0;
-
-            var oreStimateTotali = tasksCompletati.Sum(t => t.OreStimate);
-            var oreRealiTotali = tasksCompletati.Sum(t => t.OreReali);
-
-            return (oreStimateTotali / (double)oreRealiTotali) * 100;
-        }
-
-        private List<AlertDto> GeneraAlerts(List<Ordine> ordini, List<TaskProduzione> tasks, List<Macchina> macchine)
-        {
-            var alerts = new List<AlertDto>();
-            var oggi = DateTime.Now;
-
-            // Alert ordini in ritardo
-            foreach (var o in ordini.Where(o => o.DataScadenza < oggi && o.Stato != StatoOrdine.Completato))
-            {
-                alerts.Add(new AlertDto
-                {
-                    Severita = 3,
-                    Messaggio = $"Ordine {o.Numero} in RITARDO di {(oggi - o.DataScadenza).Days} giorni",
-                    TipoAlert = "ritardo"
-                });
-            }
-
-            // Alert macchine in guasto
-            foreach (var m in macchine.Where(m => m.Stato == StatoMacchina.Guasto))
-            {
-                alerts.Add(new AlertDto
-                {
-                    Severita = 3,
-                    Messaggio = $"Macchina '{m.Nome}' in GUASTO",
-                    TipoAlert = "guasto"
-                });
-            }
-
-            // Alert scadenze imminenti (< 3 giorni)
-            foreach (var o in ordini.Where(o => o.DataScadenza <= oggi.AddDays(3) && o.Stato != StatoOrdine.Completato))
-            {
-                alerts.Add(new AlertDto
-                {
-                    Severita = 2,
-                    Messaggio = $"Scadenza imminente: {o.Numero} ({o.DataScadenza:dd/MM})",
-                    TipoAlert = "scadenza"
-                });
-            }
-
-            return alerts.OrderByDescending(a => a.Severita).ToList();
-        }
-
-        private string OttieniColoreTask(StatoTask stato, int progresso)
-        {
-            return stato switch
-            {
-                StatoTask.Completato => "#10b981", // Verde
-                StatoTask.InCorso => "#3b82f6",    // Blu
-                StatoTask.Bloccato => "#ef4444",   // Rosso
-                StatoTask.InCoda => "#f59e0b",     // Arancione
-                _ => "#9ca3af"                     // Grigio
-            };
-        }
+    private static OrdineDetailDto MapToDetailDto(Ordine o)
+    {
+        return new OrdineDetailDto(
+            o.Id,
+            o.Codice,
+            o.Cliente,
+            o.Descrizione,
+            o.DataCreazione,
+            o.DataConsegna,
+            o.Stato,
+            o.Progresso,
+            o.Tasks.Select(t => new TaskListItemDto(
+                t.Id,
+                t.Titolo,
+                t.Stato,
+                t.Priorita,
+                t.DataInizio,
+                t.DataFine,
+                null,
+                t.Macchina?.Nome,
+                t.Operatore != null ? $"{t.Operatore.Nome} {t.Operatore.Cognome}" : null
+            )).ToList()
+        );
     }
 }

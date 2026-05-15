@@ -8,47 +8,67 @@ using VariProduzioneApi.Data;
 using VariProduzioneApi.Services;
 using VariProduzioneApi.Endpoints;
 using Scalar.AspNetCore;
+using Swashbuckle.AspNetCore.Swagger;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- Servizi Core ---
-builder.Services.AddDbContext<ProdDbContext>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? "Server=localhost;Database=VariProduzione;Trusted_Connection=true;TrustServerCertificate=true;Encrypt=false"));
+// Add services to the container.
+builder.Services.AddDbContext<ProdDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Registrazione servizi
 builder.Services.AddScoped<IOrdineService, OrdineService>();
 builder.Services.AddScoped<IMacchinaService, MacchinaService>();
 builder.Services.AddScoped<IOperatoreService, OperatoreService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 
-// --- Utility & Infrastructure ---
-builder.Services.AddCors(opt =>
+builder.Services.AddControllers();
+builder.Services.AddOpenApi();
+builder.Services.AddCors(options =>
 {
-    opt.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:5173")  // URL del frontend
+              .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowCredentials();
     });
 });
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApi();
-
 var app = builder.Build();
 
-// --- Middleware Pipeline ---
+app.UseCors("AllowFrontend");
+
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "VariProduzione API v1");
+    });
 }
 
 //app.UseHttpsRedirection();
-app.UseCors();
+app.UseAuthorization();
+app.MapControllers();
 
-// --- Mapping Endpoints ---
-app.MapProduzioneApi();
-app.MapGestioneApi();
+// Mappatura endpoint
+app.MapOrdiniEndpoints();
+app.MapMacchineEndpoints();
+app.MapTasksEndpoints();
+// Rimuovi o commenta se non esistono più:
+app.MapProduzioneEndpoints();
+app.MapGestioneEndpoints();
+
+// Inizializzazione database
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ProdDbContext>();
+    DbInitializer.Initialize(context);
+}
 
 // Root endpoint for health check
 app.MapGet("/", () => new { app = "VariProduzione API", version = "1.1.0", status = "Running" });
