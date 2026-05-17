@@ -1,25 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Scrivania\\VariProduzione\\VariProduzione\\VariProduzioneApi\\VariProduzioneApi.csproj": {}
+    "/home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/VariProduzioneApi.csproj": {}
   },
   "projects": {
-    "C:\\Scrivania\\VariProduzione\\VariProduzione\\VariProduzioneApi\\VariProduzioneApi.csproj": {
+    "/home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/VariProduzioneApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Scrivania\\VariProduzione\\VariProduzione\\VariProduzioneApi\\VariProduzioneApi.csproj",
+        "projectUniqueName": "/home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/VariProduzioneApi.csproj",
         "projectName": "VariProduzioneApi",
-        "projectPath": "C:\\Scrivania\\VariProduzione\\VariProduzione\\VariProduzioneApi\\VariProduzioneApi.csproj",
-        "packagesPath": "C:\\Users\\MarioSabetta\\.nuget\\packages\\",
-        "outputPath": "C:\\Scrivania\\VariProduzione\\VariProduzione\\VariProduzioneApi\\obj\\",
+        "projectPath": "/home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/VariProduzioneApi.csproj",
+        "packagesPath": "/home/mario/.nuget/packages/",
+        "outputPath": "/home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\MarioSabetta\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/mario/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "/usr/lib/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -94,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.108/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.107/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

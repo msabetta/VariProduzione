@@ -19,6 +19,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ProdDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+// Aggiungi queste righe temporanee per debug
+Console.WriteLine("Connection string usata:");
+Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
+
 // Registrazione servizi
 builder.Services.AddScoped<IOrdineService, OrdineService>();
 builder.Services.AddScoped<IMacchinaService, MacchinaService>();

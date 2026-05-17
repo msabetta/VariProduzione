@@ -17,52 +17,55 @@ public class ProdDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configurazione Ordine
-        modelBuilder.Entity<Ordine>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Codice).IsRequired().HasMaxLength(50);
-            entity.Property(e => e.Cliente).IsRequired().HasMaxLength(200);
-            entity.HasIndex(e => e.Codice).IsUnique();
-        });
+        modelBuilder.Entity<Macchina>()
+            .Property(m => m.TassoUtilizzo)
+            .HasPrecision(5, 2);
 
-        // Configurazione Macchina
-        modelBuilder.Entity<Macchina>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Codice).IsRequired().HasMaxLength(50);
-            entity.Property(e => e.Nome).IsRequired().HasMaxLength(200);
-            entity.HasIndex(e => e.Codice).IsUnique();
-        });
+        modelBuilder.Entity<Operatore>()
+            .Property(o => o.EfficienzaMedia)
+            .HasPrecision(5, 2);
 
-        // Configurazione Operatore
-        modelBuilder.Entity<Operatore>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Nome).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.Cognome).IsRequired().HasMaxLength(100);
-        });
+        modelBuilder.Entity<Ordine>()
+            .Property(o => o.CostoStimato)
+            .HasPrecision(18, 2);
 
-        // Configurazione TaskProduzione
         modelBuilder.Entity<TaskProduzione>(entity =>
         {
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Titolo).IsRequired().HasMaxLength(200);
-            
-            entity.HasOne(e => e.Ordine)
-                  .WithMany(o => o.Tasks)
-                  .HasForeignKey(e => e.OrdineId)
-                  .OnDelete(DeleteBehavior.SetNull);
-                  
-            entity.HasOne(e => e.Macchina)
-                  .WithMany(m => m.TasksAssegnati)
-                  .HasForeignKey(e => e.MacchinaId)
-                  .OnDelete(DeleteBehavior.SetNull);
-                  
-            entity.HasOne(e => e.Operatore)
-                  .WithMany(o => o.TasksAssegnati)
-                  .HasForeignKey(e => e.OperatoreId)
-                  .OnDelete(DeleteBehavior.SetNull);
+            entity.Property(t => t.CostoMateriali).HasPrecision(18, 2);
+            entity.Property(t => t.OreReali).HasPrecision(8, 2);
+            entity.Property(t => t.OreStimate).HasPrecision(8, 2);
         });
+
+        // === ORDINI ===
+        modelBuilder.Entity<Ordine>()
+            .HasIndex(o => new { o.Stato, o.DataScadenza })
+            .HasDatabaseName("IX_Ordine_Stato_DataScadenza");
+
+        // === TASK ===
+        modelBuilder.Entity<TaskProduzione>()
+            .HasIndex(t => new { t.OrdineId, t.MacchinaId, t.Stato })
+            .HasDatabaseName("IX_Task_Ordine_Macchina_Stato");
+
+        // === DataInizio ===
+        modelBuilder.Entity<TaskProduzione>()
+            .HasIndex(t => t.DataInizio)
+            .HasDatabaseName("IX_Task_DataInizio");
+
+        // === MACCHINE ===
+        modelBuilder.Entity<Macchina>()
+            .HasIndex(m => m.Codice)
+            .IsUnique()
+            .HasDatabaseName("IX_Macchina_Codice_Unique");
+
+        // === OPERATORI ===
+        modelBuilder.Entity<Operatore>()
+            .HasIndex(o => o.Attivo)
+            .HasDatabaseName("IX_Operatore_Attivo");
+
+        modelBuilder.Entity<Operatore>()
+            .HasIndex(o => o.Matricola)
+            .IsUnique()
+            .HasDatabaseName("IX_Operatore_Matricola_Unique");
+
     }
 }

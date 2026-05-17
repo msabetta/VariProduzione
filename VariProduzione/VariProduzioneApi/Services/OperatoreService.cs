@@ -77,9 +77,11 @@ public class OperatoreService : IOperatoreService
     public async Task<bool> DeleteAsync(int id)
     {
         var operatore = await _context.Operatori.FindAsync(id);
+        
         if (operatore == null) return false;
 
         _context.Operatori.Remove(operatore);
+        
         await _context.SaveChangesAsync();
         return true;
     }

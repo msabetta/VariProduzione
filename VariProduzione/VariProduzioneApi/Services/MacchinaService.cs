@@ -143,8 +143,7 @@ public class MacchinaService : IMacchinaService
         if (result == null) return null;
         
         // Recupera il conteggio task attive dal db
-        var taskAttive = await _context.Tasks
-            .CountAsync(t => t.MacchinaId == id && t.Stato != StatoTask.Completato);
+        var taskAttive = await _context.Tasks.CountAsync(t => t.MacchinaId == id && t.Stato != StatoTask.Completato);
 
         return new MacchinaStatusDto
         {

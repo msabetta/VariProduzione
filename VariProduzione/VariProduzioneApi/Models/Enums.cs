@@ -7,7 +7,8 @@ public enum StatoOrdine
     InProduzione,
     Completato,
     Annullato,
-    Ritardato
+    Ritardato,
+    DaLavorare
 }
 
 public enum StatoMacchina

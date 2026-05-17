@@ -66,11 +66,13 @@ public class OrdineService : IOrdineService
     public async Task<OrdineDetailDto?> UpdateAsync(int id, AggiornaOrdineDto dto)
     {
         var ordine = await _context.Ordini.FindAsync(id);
+        
         if (ordine == null) return null;
         ordine.Cliente = dto.Cliente;
         ordine.Descrizione = dto.Descrizione;
         ordine.DataConsegna = dto.DataConsegna;
         ordine.Stato = dto.Stato;
+
         await _context.SaveChangesAsync();
         return await GetByIdAsync(id);
     }
@@ -78,8 +80,11 @@ public class OrdineService : IOrdineService
     public async Task<bool> DeleteAsync(int id)
     {
         var ordine = await _context.Ordini.FindAsync(id);
+        
         if (ordine == null) return false;
+        
         _context.Ordini.Remove(ordine);
+        
         await _context.SaveChangesAsync();
         return true;
     }
@@ -87,11 +92,22 @@ public class OrdineService : IOrdineService
     public async Task<OrdineDetailDto?> UpdateProgressoAsync(int id, AggiornaProgressoOrdineDto dto)
     {
         var ordine = await _context.Ordini.FindAsync(id);
+        
         if (ordine == null) return null;
+        
         ordine.Progresso = Math.Clamp(dto.Progresso, 0, 100);
-        if (ordine.Progresso == 100) ordine.Stato = StatoOrdine.Completato;
-        else if (ordine.Progresso > 0) ordine.Stato = StatoOrdine.InProduzione;
+        
+        if (ordine.Progresso == 100)
+        {
+            ordine.Stato = StatoOrdine.Completato;
+        }
+        else if (ordine.Progresso > 0)
+        {
+            ordine.Stato = StatoOrdine.InProduzione;
+        }
+
         await _context.SaveChangesAsync();
+
         return await GetByIdAsync(id);
     }
 
@@ -99,16 +115,19 @@ public class OrdineService : IOrdineService
 
     public async Task<DashboardDto> GetDashboardAsync()
     {
-        var totali = await _context.Ordini.CountAsync();
-        var inProduzione = await _context.Ordini.CountAsync(o => o.Stato == StatoOrdine.InProduzione);
-        var completati = await _context.Ordini.CountAsync(o => o.Stato == StatoOrdine.Completato);
-        var inRitardo = await _context.Ordini.CountAsync(o => o.Stato == StatoOrdine.Ritardato);
+        var totali = await _context.Ordini.AsNoTracking().CountAsync();        
+        var inProduzione = await _context.Ordini.AsNoTracking().CountAsync(o => o.Stato == StatoOrdine.InProduzione);
+        var completati = await _context.Ordini.AsNoTracking().CountAsync(o => o.Stato == StatoOrdine.Completato);
+        var inRitardo = await _context.Ordini.AsNoTracking().CountAsync(o => o.Stato == StatoOrdine.Ritardato);
+        var daLavorare = await _context.Ordini.AsNoTracking().CountAsync(o => o.Stato == StatoOrdine.DaLavorare);
+
         return new DashboardDto
         {
             TotaleOrdini = totali,
             InProduzione = inProduzione,
             Completati = completati,
-            InRitardo = inRitardo
+            InRitardo = inRitardo,
+            DaLavorare = daLavorare
         };
     }
 
