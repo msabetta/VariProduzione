@@ -45,10 +45,6 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
-            "Microsoft.AspNetCore.OpenApi": {
-              "target": "Package",
-              "version": "[9.0.0, )"
-            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.0, )"
@@ -67,13 +63,9 @@
               "target": "Package",
               "version": "[9.0.0, )"
             },
-            "Scalar.AspNetCore": {
-              "target": "Package",
-              "version": "[1.2.39, )"
-            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.6.2, )"
+              "version": "[7.2.0, )"
             }
           },
           "imports": [

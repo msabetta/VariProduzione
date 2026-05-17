@@ -10,6 +10,7 @@
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/publish/web.config
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/appsettings.Docker.json
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/appsettings.json
+/home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/appsettings.WIndows.json
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/publish/appsettings.Docker.json
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/publish/appsettings.json
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/publish/VariProduzioneApi.deps.json
@@ -24,7 +25,6 @@
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/Azure.Core.dll
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/Azure.Identity.dll
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/Humanizer.dll
-/home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/Microsoft.AspNetCore.OpenApi.dll
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/Microsoft.Bcl.AsyncInterfaces.dll
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/Microsoft.Build.Locator.dll
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/Microsoft.CodeAnalysis.dll
@@ -54,7 +54,6 @@
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/Mono.TextTemplating.dll
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/MySqlConnector.dll
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/Pomelo.EntityFrameworkCore.MySql.dll
-/home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/Scalar.AspNetCore.dll
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/Swashbuckle.AspNetCore.Swagger.dll
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -165,4 +164,3 @@
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/obj/Debug/net10.0/VariProduzioneApi.pdb
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/obj/Debug/net10.0/VariProduzioneApi.genruntimeconfig.cache
 /home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/obj/Debug/net10.0/ref/VariProduzioneApi.dll
-/home/mario/Scrivania/VariProduzione/VariProduzione/VariProduzioneApi/bin/Debug/net10.0/appsettings.WIndows.json

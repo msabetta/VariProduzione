@@ -12,8 +12,7 @@ public static class GestioneEndpoints
     public static IEndpointRouteBuilder MapGestioneEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/gestione")
-            .WithTags("Gestione")
-            .WithOpenApi();
+            .WithTags("Gestione");
 
         // ========== MACCHINE ==========
 

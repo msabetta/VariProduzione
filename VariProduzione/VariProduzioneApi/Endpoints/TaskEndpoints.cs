@@ -5,8 +5,7 @@ public static class TasksEndpoints
     public static IEndpointRouteBuilder MapTasksEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/tasks")
-            .WithTags("Tasks")
-            .WithOpenApi();
+            .WithTags("Tasks");
 
         // GET /api/tasks
         group.MapGet("/", async (Services.ITaskService service) =>

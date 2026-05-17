@@ -136,23 +136,23 @@ public class OrdineService : IOrdineService
         return await _context.Ordini
             .AsNoTracking()
             .Where(o => o.Stato == StatoOrdine.Ritardato || 
-                       (o.DataScadenza.HasValue && o.DataScadenza < DateTime.Now && o.Stato != StatoOrdine.Completato))
+                       (o.DataConsegna.HasValue && o.DataConsegna < DateTime.Now && o.Stato != StatoOrdine.Completato))
             .Select(o => new AlertDto
             {
                 Id = o.Id,
                 Messaggio = $"Ordine {o.Codice} in ritardo",
                 Tipo = "Ritardo",
-                Data = o.DataScadenza ?? DateTime.Now
+                Data = o.DataConsegna ?? DateTime.Now
             })
             .ToListAsync();
     }
 
     public async Task<GanttDataDto> GetGanttDataAsync()
     {
-        var tasks = await _context.Tasks
+        var tasks = await _context.TaskProduzione
             .AsNoTracking()
             .Include(t => t.Ordine)
-            .Where(t => t.OrdineId.HasValue)
+            .Where(t => t.IdOrdine.HasValue)
             .ToListAsync();
             
         return new GanttDataDto

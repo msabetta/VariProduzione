@@ -16,7 +16,7 @@ public class TaskService : ITaskService
 
     public async Task<IEnumerable<TaskListItemDto>> GetAllAsync()
     {
-        return await _context.Tasks
+        return await _context.TaskProduzione
             .AsNoTracking()
             .Include(t => t.Ordine)
             .Include(t => t.Macchina)
@@ -37,7 +37,7 @@ public class TaskService : ITaskService
 
     public async Task<TaskDetailDto?> GetByIdAsync(int id)
     {
-        var task = await _context.Tasks
+        var task = await _context.TaskProduzione
             .AsNoTracking()
             .Include(t => t.Ordine)
             .Include(t => t.Macchina)
@@ -62,7 +62,7 @@ public class TaskService : ITaskService
             OperatoreId = dto.OperatoreId
         };
 
-        _context.Tasks.Add(task);
+        _context.TaskProduzione.Add(task);
         await _context.SaveChangesAsync();
 
         // Ricarica con relazioni
@@ -72,7 +72,7 @@ public class TaskService : ITaskService
 
     public async Task<TaskDetailDto?> UpdateAsync(int id, AggiornaTaskDto dto)
     {
-        var task = await _context.Tasks.FindAsync(id);
+        var task = await _context.TaskProduzione.FindAsync(id);
         if (task == null) return null;
 
         task.Titolo = dto.Titolo;
@@ -93,17 +93,17 @@ public class TaskService : ITaskService
 
     public async Task<bool> DeleteAsync(int id)
     {
-        var task = await _context.Tasks.FindAsync(id);
+        var task = await _context.TaskProduzione.FindAsync(id);
         if (task == null) return false;
 
-        _context.Tasks.Remove(task);
+        _context.TaskProduzione.Remove(task);
         await _context.SaveChangesAsync();
         return true;
     }
 
     public async Task<TaskDetailDto?> AssegnaAsync(int id, AssegnaTaskDto dto)
     {
-        var task = await _context.Tasks.FindAsync(id);
+        var task = await _context.TaskProduzione.FindAsync(id);
         if (task == null) return null;
 
         task.OrdineId = dto.OrdineId;

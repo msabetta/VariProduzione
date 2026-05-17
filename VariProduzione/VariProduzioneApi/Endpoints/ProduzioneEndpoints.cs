@@ -11,8 +11,7 @@ public static class ProduzioneEndpoints
     public static IEndpointRouteBuilder MapProduzioneEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/produzione")
-            .WithTags("Produzione")
-            .WithOpenApi();
+            .WithTags("Produzione");
 
         // GET /api/produzione/dashboard
         group.MapGet("/dashboard", async (IOrdineService service) =>

@@ -11,61 +11,70 @@ public class ProdDbContext : DbContext
     public DbSet<Ordine> Ordini => Set<Ordine>();
     public DbSet<Macchina> Macchine => Set<Macchina>();
     public DbSet<Operatore> Operatori => Set<Operatore>();
-    public DbSet<TaskProduzione> Tasks => Set<TaskProduzione>();
+    public DbSet<TaskProduzione> TaskProduzione => Set<TaskProduzione>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Macchina>()
-            .Property(m => m.TassoUtilizzo)
-            .HasPrecision(5, 2);
-
-        modelBuilder.Entity<Operatore>()
-            .Property(o => o.EfficienzaMedia)
-            .HasPrecision(5, 2);
-
-        modelBuilder.Entity<Ordine>()
-            .Property(o => o.CostoStimato)
-            .HasPrecision(18, 2);
-
-        modelBuilder.Entity<TaskProduzione>(entity =>
+        // Macchina
+        modelBuilder.Entity<Macchina>(entity =>
         {
-            entity.Property(t => t.CostoMateriali).HasPrecision(18, 2);
-            entity.Property(t => t.OreReali).HasPrecision(8, 2);
-            entity.Property(t => t.OreStimate).HasPrecision(8, 2);
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Nome).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.TipoMacchina).HasMaxLength(50);
+            entity.Property(e => e.TassoUtilizzo).HasPrecision(5, 2);
+            entity.Property(e => e.Stato).HasMaxLength(20);
         });
 
-        // === ORDINI ===
-        modelBuilder.Entity<Ordine>()
-            .HasIndex(o => new { o.Stato, o.DataScadenza })
-            .HasDatabaseName("IX_Ordine_Stato_DataScadenza");
+        // Operatore
+        modelBuilder.Entity<Operatore>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Nome).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.Cognome).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.Matricola).HasMaxLength(20).IsRequired();
+            entity.HasIndex(e => e.Matricola).IsUnique();
+            entity.Property(e => e.EfficienzaMedia).HasPrecision(5, 2);
+        });
 
-        // === TASK ===
-        modelBuilder.Entity<TaskProduzione>()
-            .HasIndex(t => new { t.OrdineId, t.MacchinaId, t.Stato })
-            .HasDatabaseName("IX_Task_Ordine_Macchina_Stato");
+        // Ordine
+        modelBuilder.Entity<Ordine>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Codice).HasMaxLength(50).IsRequired();
+            entity.HasIndex(e => e.Codice).IsUnique();
+            entity.Property(e => e.Cliente).HasMaxLength(100);
+            entity.Property(e => e.CostoStimato).HasPrecision(18, 2);
+            entity.Property(e => e.Stato).HasMaxLength(20);
+        });
 
-        // === DataInizio ===
-        modelBuilder.Entity<TaskProduzione>()
-            .HasIndex(t => t.DataInizio)
-            .HasDatabaseName("IX_Task_DataInizio");
+        // TaskProduzione
+        modelBuilder.Entity<TaskProduzione>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Nome).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.Descrizione).HasMaxLength(500);
+            entity.Property(e => e.CostoMateriali).HasPrecision(18, 2);
+            entity.Property(e => e.OreStimate).HasPrecision(8, 2);
+            entity.Property(e => e.OreReali).HasPrecision(8, 2);
+            entity.Property(e => e.Stato).HasMaxLength(20);
 
-        // === MACCHINE ===
-        modelBuilder.Entity<Macchina>()
-            .HasIndex(m => m.Codice)
-            .IsUnique()
-            .HasDatabaseName("IX_Macchina_Codice_Unique");
+            // Relazioni
+            entity.HasOne(t => t.Ordine)
+                  .WithMany(o => o.Tasks)
+                  .HasForeignKey(t => t.OrdineId)
+                  .OnDelete(DeleteBehavior.SetNull);
 
-        // === OPERATORI ===
-        modelBuilder.Entity<Operatore>()
-            .HasIndex(o => o.Attivo)
-            .HasDatabaseName("IX_Operatore_Attivo");
+            entity.HasOne(t => t.Macchina)
+                  .WithMany()
+                  .HasForeignKey(t => t.MacchinaId)
+                  .OnDelete(DeleteBehavior.SetNull);
 
-        modelBuilder.Entity<Operatore>()
-            .HasIndex(o => o.Matricola)
-            .IsUnique()
-            .HasDatabaseName("IX_Operatore_Matricola_Unique");
-
+            entity.HasOne(t => t.Operatore)
+                  .WithMany()
+                  .HasForeignKey(t => t.OperatoreId)
+                  .OnDelete(DeleteBehavior.SetNull);
+        });
     }
 }

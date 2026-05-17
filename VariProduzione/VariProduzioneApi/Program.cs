@@ -1,48 +1,41 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using VariProduzioneApi.Data;
 using VariProduzioneApi.Services;
 using VariProduzioneApi.Endpoints;
-using Scalar.AspNetCore;
-using Swashbuckle.AspNetCore.Swagger;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddDbContext<ProdDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-
-// Aggiungi queste righe temporanee per debug
+// Connection string debug
 Console.WriteLine("Connection string usata:");
 Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
 
-// Registrazione servizi
+// Database
+builder.Services.AddDbContext<ProdDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Servizi
 builder.Services.AddScoped<IOrdineService, OrdineService>();
 builder.Services.AddScoped<IMacchinaService, MacchinaService>();
 builder.Services.AddScoped<IOperatoreService, OperatoreService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 
+// Controllers
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")  // URL del frontend
+        policy.WithOrigins("http://localhost:5173", "http://localhost:4200", "http://localhost:3000")
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowAnyMethod();
     });
 });
 
+// JSON
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -50,43 +43,43 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
+// Middleware
 app.UseCors("AllowFrontend");
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Swagger UI - SEMPRE ATTIVO
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.MapOpenApi();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/openapi/v1.json", "VariProduzione API v1");
-    });
-}
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "VariProduzione API v1");
+    options.RoutePrefix = "swagger";
+});
 
-//app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-// Mappatura endpoint
+// Minimal API endpoints
 app.MapOrdiniEndpoints();
 app.MapMacchineEndpoints();
 app.MapTasksEndpoints();
-// Rimuovi o commenta se non esistono più:
-app.MapProduzioneEndpoints();
-app.MapGestioneEndpoints();
 
-// Inizializzazione database
-using (var scope = app.Services.CreateScope())
+// Root
+app.MapGet("/", () => Results.Ok(new
 {
-    var context = scope.ServiceProvider.GetRequiredService<ProdDbContext>();
-    DbInitializer.Initialize(context);
-}
+    app = "VariProduzione API",
+    version = "1.1.0",
+    status = "Running",
+    swagger = "http://localhost:5000/swagger"
+}));
 
-// Root endpoint for health check
-app.MapGet("/", () => new { app = "VariProduzione API", version = "1.1.0", status = "Running" });
+app.MapGet("/health", () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow }));
 
-// --- Database Initialization ---
+// Inizializzazione database (UNA SOLA VOLTA)
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -101,26 +94,5 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Errore durante l'inizializzazione del DB.");
     }
 }
-
-// CORREZIONE: Health check endpoint
-app.MapGet("/health", () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow }));
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var context = services.GetRequiredService<ProdDbContext>();
-        DbInitializer.Initialize(context);
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Errore durante l''inizializzazione del DB.");
-    }
-}
-
-app.MapGet("/scalar",() => Results.Ok(new { message = "API di Produzione - Version 1.1.0"}));
-
 
 app.Run();

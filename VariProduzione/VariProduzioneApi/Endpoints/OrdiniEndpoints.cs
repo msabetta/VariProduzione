@@ -7,8 +7,7 @@ public static class OrdiniEndpoints
     public static IEndpointRouteBuilder MapOrdiniEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/ordini")
-            .WithTags("Ordini")
-            .WithOpenApi();
+            .WithTags("Ordini");
 
         // GET /api/ordini
         group.MapGet("/", async (Services.IOrdineService service) =>

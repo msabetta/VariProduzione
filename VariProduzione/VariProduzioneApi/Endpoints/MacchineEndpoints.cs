@@ -7,8 +7,7 @@ public static class MacchineEndpoints
     public static IEndpointRouteBuilder MapMacchineEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/macchine")
-            .WithTags("Macchine")
-            .WithOpenApi();
+            .WithTags("Macchine");
 
         // GET /api/macchine
         group.MapGet("/", async (Services.IMacchinaService service) =>
